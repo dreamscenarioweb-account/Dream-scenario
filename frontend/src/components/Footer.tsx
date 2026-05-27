@@ -17,8 +17,8 @@ const Footer = () => {
       .catch(() => {});
   }, []);
 
-  const siteName = settings.site_name || "Ethereal Photography";
-  const contactEmail = settings.contact_email || "info@etherealphotography.com";
+  const siteName = settings.site_name || "Dream Scenario";
+  const contactEmail = settings.contact_email || "info@dreamscenariophotography.com";
   const contactPhone = settings.contact_phone || "+1 (555) 123-4567";
   const address = settings.address || "Worldwide Coverage";
   const instagramUrl = settings.instagram_url || "#";
