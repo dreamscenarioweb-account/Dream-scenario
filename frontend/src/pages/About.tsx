@@ -122,9 +122,9 @@ const About = () => {
         <section className="py-20 px-4">
           <div className="container mx-auto">
             <SectionTitle title="Our Team" subtitle="A passionate group of creatives dedicated to capturing your most precious moments." />
-            <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <StaggerReveal className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
               {teamMembers.map((member: any) => (
-                <StaggerItem key={member.id}>
+                <StaggerItem key={member.id} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm">
                   <div className="text-center">
                     <div className="overflow-hidden mb-4">
                       <motion.img

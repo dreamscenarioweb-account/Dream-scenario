@@ -16,7 +16,7 @@ const navLinks = [
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const [siteName, setSiteName] = useState("Ethereal");
+  const [siteName, setSiteName] = useState("Dream Scenario");
 
   // Fetch site name from settings
   useEffect(() => {
@@ -29,14 +29,21 @@ const Header = () => {
       .catch(() => {});
   }, []);
 
-  // Scroll hiding logic
+  // Scroll hiding & premium sizing logic
   const [isVisible, setIsVisible] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const lastScrollY = useRef(0);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
+ 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
       
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
@@ -51,12 +58,12 @@ const Header = () => {
       }
       
       lastScrollY.current = currentScrollY;
-
+ 
       scrollTimeoutRef.current = setTimeout(() => {
         setIsVisible(true);
       }, 800);
     };
-
+ 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -80,7 +87,7 @@ const Header = () => {
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md shadow-glass border-b border-border/40"
       >
-        <div className="container mx-auto flex items-center justify-between py-3 px-4 md:px-8">
+        <div className={`container mx-auto flex items-center justify-between px-4 md:px-8 transition-all duration-500 ${isScrolled ? "py-3" : "py-5 md:py-6"}`}>
           <Link to="/" className="font-display text-xl md:text-2xl tracking-[0.2em] uppercase text-foreground z-50">
             {siteName}
           </Link>

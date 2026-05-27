@@ -52,7 +52,7 @@ const Contact = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const contactEmail = settings.contact_email || "info@etherealphotography.com";
+  const contactEmail = settings.contact_email || "info@dreamscenariophotography.com";
   const contactPhone = settings.contact_phone || "+1 (555) 123-4567";
   const contactAddress = settings.address || "Worldwide Coverage";
   const instagramUrl = settings.instagram_url || "#";
