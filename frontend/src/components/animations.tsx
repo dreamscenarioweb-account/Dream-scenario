@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { motion, type Variants } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, type ReactNode } from "react";

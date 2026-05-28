@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchPublicSettings } from "@/lib/publicApi";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -16,18 +16,8 @@ const navLinks = [
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const [siteName, setSiteName] = useState("Dream Scenario");
-
-  // Fetch site name from settings
-  useEffect(() => {
-    fetchPublicSettings()
-      .then((res) => {
-        if (res.data && res.data.site_name) {
-          setSiteName(res.data.site_name);
-        }
-      })
-      .catch(() => {});
-  }, []);
+  const { getSetting } = useSiteSettings();
+  const siteName = getSetting("site_name");
 
   // Scroll hiding & premium sizing logic
   const [isVisible, setIsVisible] = useState(true);

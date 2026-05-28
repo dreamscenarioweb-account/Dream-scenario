@@ -7,9 +7,11 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, UploadCloud } from "lucide-react";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
 
 const Settings = () => {
   const queryClient = useQueryClient();
+  const { refreshSettings } = useSiteSettings();
   const [formData, setFormData] = useState<Record<string, string>>({
     site_name: "",
     contact_email: "",
@@ -38,12 +40,8 @@ const Settings = () => {
   });
 
   useEffect(() => {
-    if (response && Array.isArray(response)) {
-      const newForm: Record<string, string> = { ...formData };
-      response.forEach((setting: any) => {
-        newForm[setting.key] = setting.value;
-      });
-      setFormData(newForm);
+    if (response && typeof response === "object" && !Array.isArray(response)) {
+      setFormData((prev) => ({ ...prev, ...(response as Record<string, string>) }));
     }
   }, [response]);
 
@@ -51,6 +49,7 @@ const Settings = () => {
     mutationFn: (data: Record<string, string>) => updateSettings(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_settings"] });
+      refreshSettings();
       toast.success("Settings updated successfully");
     },
     onError: () => toast.error("Failed to update settings"),
@@ -102,19 +101,19 @@ const Settings = () => {
             <h3 className={sectionClass}>General Info</h3>
             <div className="space-y-2.5">
               <Label htmlFor="site_name" className={labelClass}>Site Name</Label>
-              <Input id="site_name" value={formData.site_name || ""} onChange={handleChange} className={inputClass} />
+              <Input id="site_name" value={formData.site_name || ""} onChange={handleChange} placeholder="Your Photography Studio" className={inputClass} />
             </div>
             <div className="space-y-2.5">
               <Label htmlFor="contact_email" className={labelClass}>Public Contact Email</Label>
-              <Input id="contact_email" type="email" value={formData.contact_email || ""} onChange={handleChange} className={inputClass} />
+              <Input id="contact_email" type="email" value={formData.contact_email || ""} onChange={handleChange} placeholder="hello@yourstudio.com" className={inputClass} />
             </div>
             <div className="space-y-2.5">
               <Label htmlFor="contact_phone" className={labelClass}>Contact Phone</Label>
-              <Input id="contact_phone" value={formData.contact_phone || ""} onChange={handleChange} className={inputClass} />
+              <Input id="contact_phone" value={formData.contact_phone || ""} onChange={handleChange} placeholder="+1 (555) 000-0000" className={inputClass} />
             </div>
             <div className="space-y-2.5">
               <Label htmlFor="address" className={labelClass}>Address / Location</Label>
-              <Textarea id="address" value={formData.address || ""} onChange={handleChange} rows={3} className="border-[hsl(215,20%,90%)] rounded-lg focus-visible:ring-black" />
+              <Textarea id="address" value={formData.address || ""} onChange={handleChange} rows={3} placeholder="City, Country" className="border-[hsl(215,20%,90%)] rounded-lg focus-visible:ring-black" />
             </div>
           </div>
 

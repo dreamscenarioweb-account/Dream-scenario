@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { HeroSlide } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchHeroSlides, createHeroSlide, updateHeroSlide, deleteHeroSlide, uploadImage } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 const HeroSlides = () => {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingSlide, setEditingSlide] = useState<any>(null);
+  const [editingSlide, setEditingSlide] = useState<HeroSlide | null>(null);
   const [formData, setFormData] = useState({ image_url: "", alt_text: "", display_order: 0, is_active: true });
   const [isUploading, setIsUploading] = useState(false);
 
@@ -27,7 +28,7 @@ const HeroSlides = () => {
   const slides = Array.isArray(response) ? response : [];
 
   const createMutation = useMutation({
-    mutationFn: (data: any) => createHeroSlide(data),
+    mutationFn: (data: Record<string, unknown>) => createHeroSlide(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_hero_slides"] });
       toast.success("Hero slide created successfully");
@@ -38,7 +39,7 @@ const HeroSlides = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateHeroSlide(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateHeroSlide(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_hero_slides"] });
       toast.success("Hero slide updated successfully");
@@ -82,7 +83,7 @@ const HeroSlides = () => {
     }
   };
 
-  const handleEdit = (slide: any) => {
+  const handleEdit = (slide: HeroSlide) => {
     setEditingSlide(slide);
     setFormData({
       image_url: slide.image_url,
@@ -175,7 +176,7 @@ const HeroSlides = () => {
                   <TableCell colSpan={5} className="text-center h-32 text-[hsl(215,15%,50%)]">No slides found.</TableCell>
                 </TableRow>
               ) : (
-                slides.sort((a: any, b: any) => a.display_order - b.display_order).map((slide: any) => (
+                slides.sort((a: HeroSlide, b: HeroSlide) => a.display_order - b.display_order).map((slide: HeroSlide) => (
                   <TableRow key={slide.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell>
                       {slide.image_url ? (

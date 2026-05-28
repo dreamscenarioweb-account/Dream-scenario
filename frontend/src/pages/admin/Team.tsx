@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { TeamMember } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchTeamMembers, createTeamMember, updateTeamMember, deleteTeamMember, uploadImage } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 const Team = () => {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingItem, setEditingItem] = useState<TeamMember | null>(null);
   const [formData, setFormData] = useState({ name: "", role: "", image_url: "", display_order: 0, is_active: true });
   const [isUploading, setIsUploading] = useState(false);
 
@@ -27,7 +28,7 @@ const Team = () => {
   const team = Array.isArray(response) ? response : [];
 
   const createMutation = useMutation({
-    mutationFn: (data: any) => createTeamMember(data),
+    mutationFn: (data: Record<string, unknown>) => createTeamMember(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_team"] });
       toast.success("Team member created successfully");
@@ -38,7 +39,7 @@ const Team = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateTeamMember(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateTeamMember(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_team"] });
       toast.success("Team member updated successfully");
@@ -82,7 +83,7 @@ const Team = () => {
     }
   };
 
-  const handleEdit = (item: any) => {
+  const handleEdit = (item: TeamMember) => {
     setEditingItem(item);
     setFormData({
       name: item.name,
@@ -181,7 +182,7 @@ const Team = () => {
                   <TableCell colSpan={6} className="text-center h-32 text-[hsl(215,15%,50%)]">No team members found.</TableCell>
                 </TableRow>
               ) : (
-                team.sort((a: any, b: any) => a.display_order - b.display_order).map((item: any) => (
+                team.sort((a: TeamMember, b: TeamMember) => a.display_order - b.display_order).map((item: TeamMember) => (
                   <TableRow key={item.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell>
                       {item.image_url ? (

@@ -615,15 +615,16 @@ func (h *CMSHandler) CreateBlogPost(c *gin.Context) {
 
 	docRef := h.client.Collection("blog_posts").NewDoc()
 	s := models.BlogPost{
-		ID:           docRef.ID,
-		Title:        req.Title,
-		Category:     req.Category,
-		Excerpt:      req.Excerpt,
-		Content:      req.Content,
-		Date:         req.Date,
-		DisplayOrder: req.DisplayOrder,
-		IsActive:     isActive,
-		CreatedAt:    time.Now(),
+		ID:            docRef.ID,
+		Title:         req.Title,
+		Category:      req.Category,
+		Excerpt:       req.Excerpt,
+		Content:       req.Content,
+		Date:          req.Date,
+		CoverImageURL: req.CoverImageURL,
+		DisplayOrder:  req.DisplayOrder,
+		IsActive:      isActive,
+		CreatedAt:     time.Now(),
 	}
 
 	if _, err := docRef.Set(context.Background(), s); err != nil {
@@ -650,6 +651,7 @@ func (h *CMSHandler) UpdateBlogPost(c *gin.Context) {
 	if req.Excerpt != "" { updates = append(updates, firestore.Update{Path: "excerpt", Value: req.Excerpt}) }
 	if req.Content != "" { updates = append(updates, firestore.Update{Path: "content", Value: req.Content}) }
 	if req.Date != "" { updates = append(updates, firestore.Update{Path: "date", Value: req.Date}) }
+	updates = append(updates, firestore.Update{Path: "cover_image_url", Value: req.CoverImageURL})
 	updates = append(updates, firestore.Update{Path: "display_order", Value: req.DisplayOrder})
 	if req.IsActive != nil { updates = append(updates, firestore.Update{Path: "is_active", Value: *req.IsActive}) }
 
@@ -667,7 +669,17 @@ func (h *CMSHandler) UpdateBlogPost(c *gin.Context) {
 
 func (h *CMSHandler) DeleteBlogPost(c *gin.Context) {
 	id := c.Param("id")
-	if _, err := h.client.Collection("blog_posts").Doc(id).Delete(context.Background()); err != nil {
+
+	ctx := context.Background()
+	docSnap, err := h.client.Collection("blog_posts").Doc(id).Get(ctx)
+	if err == nil {
+		var s models.BlogPost
+		if docSnap.DataTo(&s) == nil {
+			DeleteFirebaseImage(h.bucket, s.CoverImageURL)
+		}
+	}
+
+	if _, err := h.client.Collection("blog_posts").Doc(id).Delete(ctx); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete blog post"})
 		return
 	}

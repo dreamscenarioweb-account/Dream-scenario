@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { Service } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchServices, createService, updateService, deleteService, uploadImage } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 const Services = () => {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingItem, setEditingItem] = useState<Service | null>(null);
   const [formData, setFormData] = useState({ title: "", icon_name: "", image_url: "", description: "", featuresStr: "", display_order: 0, is_active: true });
   const [isUploading, setIsUploading] = useState(false);
 
@@ -28,7 +29,7 @@ const Services = () => {
   const services = Array.isArray(response) ? response : [];
 
   const createMutation = useMutation({
-    mutationFn: (data: any) => createService(data),
+    mutationFn: (data: Record<string, unknown>) => createService(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_services"] });
       toast.success("Service created successfully");
@@ -39,7 +40,7 @@ const Services = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateService(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateService(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_services"] });
       toast.success("Service updated successfully");
@@ -93,7 +94,7 @@ const Services = () => {
     }
   };
 
-  const handleEdit = (item: any) => {
+  const handleEdit = (item: Service) => {
     setEditingItem(item);
     setFormData({
       title: item.title,
@@ -203,7 +204,7 @@ const Services = () => {
                   <TableCell colSpan={5} className="text-center h-32 text-[hsl(215,15%,50%)]">No services found.</TableCell>
                 </TableRow>
               ) : (
-                services.sort((a: any, b: any) => a.display_order - b.display_order).map((item: any) => (
+                services.sort((a: Service, b: Service) => a.display_order - b.display_order).map((item: Service) => (
                   <TableRow key={item.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell>
                       {item.image_url ? (

@@ -12,6 +12,7 @@ import Tips from "./pages/Tips";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
+import { SiteSettingsProvider } from "./contexts/SiteSettingsContext";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AdminLayout from "./components/admin/AdminLayout";
 import Login from "./pages/admin/Login";
@@ -35,36 +36,38 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/portfolio/:id" element={<Album />} />
-            <Route path="/tips" element={<Tips />} />
-            <Route path="/contact" element={<Contact />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<Login />} />
-            <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
-              <Route index element={<Dashboard />} />
-              <Route path="albums" element={<Albums />} />
-              <Route path="albums/:id/photos" element={<AlbumPhotos />} />
-              <Route path="categories" element={<Categories />} />
-              <Route path="hero-slides" element={<HeroSlides />} />
-              <Route path="testimonials" element={<Testimonials />} />
-              <Route path="services" element={<AdminServices />} />
-              <Route path="team" element={<Team />} />
-              <Route path="messages" element={<Messages />} />
-              <Route path="blog-posts" element={<BlogPosts />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
+        <SiteSettingsProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/portfolio/:id" element={<Album />} />
+              <Route path="/tips" element={<Tips />} />
+              <Route path="/contact" element={<Contact />} />
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<Login />} />
+              <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+                <Route index element={<Dashboard />} />
+                <Route path="albums" element={<Albums />} />
+                <Route path="albums/:id/photos" element={<AlbumPhotos />} />
+                <Route path="categories" element={<Categories />} />
+                <Route path="hero-slides" element={<HeroSlides />} />
+                <Route path="testimonials" element={<Testimonials />} />
+                <Route path="services" element={<AdminServices />} />
+                <Route path="team" element={<Team />} />
+                <Route path="messages" element={<Messages />} />
+                <Route path="blog-posts" element={<BlogPosts />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
+
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </SiteSettingsProvider>
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>

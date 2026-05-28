@@ -21,8 +21,9 @@ const ImageUpload = ({ value, onChange, className = "" }: ImageUploadProps) => {
     try {
       const res = await uploadImage(file);
       onChange(res.data.url || res.data.image_url);
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Upload failed");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Upload failed";
+      setError(message);
     } finally {
       setUploading(false);
     }

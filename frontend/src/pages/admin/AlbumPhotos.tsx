@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { Photo } from "@/types";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchAlbumPhotos, addAlbumPhoto, deletePhoto } from "@/lib/adminApi";
@@ -27,7 +28,7 @@ const AlbumPhotos = () => {
   const photos = Array.isArray(photosResponse) ? photosResponse : [];
 
   const addPhotoMutation = useMutation({
-    mutationFn: (data: any) => addAlbumPhoto(id!, data),
+    mutationFn: (data: Record<string, unknown>) => addAlbumPhoto(id!, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_album_photos", id] });
       toast.success("Photo added to album");
@@ -128,7 +129,7 @@ const AlbumPhotos = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {photos.sort((a, b) => a.display_order - b.display_order).map((photo: any) => (
+            {photos.sort((a, b) => a.display_order - b.display_order).map((photo: Photo) => (
               <div key={photo.id} className="group relative aspect-square rounded-xl overflow-hidden shadow-sm border border-[hsl(215,20%,90%)] bg-gray-50">
                 <img 
                   src={photo.url} 

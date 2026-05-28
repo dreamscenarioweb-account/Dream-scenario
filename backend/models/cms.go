@@ -121,23 +121,25 @@ type ServiceRequest struct {
 // ── Blog Posts ────────────────────────────────────────────────────────────────
 
 type BlogPost struct {
-	ID           string    `json:"id" firestore:"id"`
-	Title        string    `json:"title" firestore:"title"`
-	Category     string    `json:"category" firestore:"category"`
-	Excerpt      string    `json:"excerpt" firestore:"excerpt"`
-	Content      string    `json:"content" firestore:"content"`
-	Date         string    `json:"date" firestore:"date"`
-	DisplayOrder int       `json:"display_order" firestore:"display_order"`
-	IsActive     bool      `json:"is_active" firestore:"is_active"`
-	CreatedAt    time.Time `json:"created_at" firestore:"created_at"`
+	ID            string    `json:"id" firestore:"id"`
+	Title         string    `json:"title" firestore:"title"`
+	Category      string    `json:"category" firestore:"category"`
+	Excerpt       string    `json:"excerpt" firestore:"excerpt"`
+	Content       string    `json:"content" firestore:"content"`
+	Date          string    `json:"date" firestore:"date"`
+	CoverImageURL string    `json:"cover_image_url" firestore:"cover_image_url"`
+	DisplayOrder  int       `json:"display_order" firestore:"display_order"`
+	IsActive      bool      `json:"is_active" firestore:"is_active"`
+	CreatedAt     time.Time `json:"created_at" firestore:"created_at"`
 }
 
 type BlogPostRequest struct {
-	Title        string `json:"title" binding:"required"`
-	Category     string `json:"category" binding:"required"`
-	Excerpt      string `json:"excerpt" binding:"required"`
-	Content      string `json:"content"`
-	Date         string `json:"date"`
-	DisplayOrder int    `json:"display_order"`
-	IsActive     *bool  `json:"is_active"`
+	Title         string `json:"title" binding:"required"`
+	Category      string `json:"category" binding:"required"`
+	Excerpt       string `json:"excerpt" binding:"required"`
+	Content       string `json:"content"`
+	Date          string `json:"date"`
+	CoverImageURL string `json:"cover_image_url"`
+	DisplayOrder  int    `json:"display_order"`
+	IsActive      *bool  `json:"is_active"`
 }

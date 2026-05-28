@@ -1,28 +1,16 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Youtube, Mail, Phone, MapPin } from "lucide-react";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "./animations";
-import { fetchPublicSettings } from "@/lib/publicApi";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
 
 const Footer = () => {
-  const [settings, setSettings] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    fetchPublicSettings()
-      .then((res) => {
-        if (res.data && typeof res.data === "object") {
-          setSettings(res.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  const siteName = settings.site_name || "Dream Scenario";
-  const contactEmail = settings.contact_email || "info@dreamscenariophotography.com";
-  const contactPhone = settings.contact_phone || "+1 (555) 123-4567";
-  const address = settings.address || "Worldwide Coverage";
-  const instagramUrl = settings.instagram_url || "#";
-  const facebookUrl = settings.facebook_url || "#";
+  const { getSetting } = useSiteSettings();
+  const siteName = getSetting("site_name");
+  const contactEmail = getSetting("contact_email");
+  const contactPhone = getSetting("contact_phone");
+  const address = getSetting("address");
+  const instagramUrl = getSetting("instagram_url");
+  const facebookUrl = getSetting("facebook_url");
 
   return (
     <footer className="bg-foreground text-primary-foreground">
@@ -95,7 +83,7 @@ const Footer = () => {
         <ScrollReveal delay={0.3}>
           <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center">
             <p className="font-body text-xs opacity-50">
-              © {new Date().getFullYear()} {siteName}. All rights reserved.
+              Copyright {new Date().getFullYear()} {siteName}. All rights reserved.
             </p>
           </div>
         </ScrollReveal>

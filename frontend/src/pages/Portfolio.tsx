@@ -6,11 +6,12 @@ import Layout from "@/components/Layout";
 import SectionTitle from "@/components/SectionTitle";
 import { ScrollReveal } from "@/components/animations";
 import { fetchPublicAlbums, fetchPublicCategories } from "@/lib/publicApi";
+import type { Album, AlbumCategory } from "@/types";
 import hero3 from "@/assets/hero-3.jpg";
 
 const Portfolio = () => {
   const [filter, setFilter] = useState("All");
-  const [albums, setAlbums] = useState<any[]>([]);
+  const [albums, setAlbums] = useState<Album[]>([]);
   const [categories, setCategories] = useState<string[]>(["All"]);
   const [loading, setLoading] = useState(true);
 
@@ -24,10 +25,10 @@ const Portfolio = () => {
 
       setAlbums(albumData);
       if (catData.length > 0) {
-        const catNames = catData.map((c: any) => c.name || c.title);
+        const catNames = catData.map((c: AlbumCategory) => c.name);
         setCategories(["All", ...catNames]);
       } else {
-        const uniqueCats = [...new Set(albumData.map((a: any) => a.category).filter(Boolean))];
+        const uniqueCats = [...new Set(albumData.map((a: Album) => a.category).filter(Boolean))];
         if (uniqueCats.length > 0) setCategories(["All", ...uniqueCats]);
       }
       setLoading(false);
@@ -36,7 +37,7 @@ const Portfolio = () => {
 
   const filtered = filter === "All"
     ? albums
-    : albums.filter((a: any) => a.category === filter);
+    : albums.filter((a: Album) => a.category === filter);
 
   return (
     <Layout>
@@ -106,7 +107,7 @@ const Portfolio = () => {
               {/* Grid */}
               <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <AnimatePresence mode="popLayout">
-                  {filtered.map((item: any, i: number) => (
+                  {filtered.map((item: Album, i: number) => (
                     <motion.div
                       key={`${item.id}-${item.category}`}
                       layout

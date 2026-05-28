@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchPublicHeroSlides } from "@/lib/publicApi";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import type { HeroSlide } from "@/types";
 
 const FOCAL_POSITIONS: Record<string, string> = {
   "DtANYZmGmYiDKSdD5pLa": "center 75%",
@@ -9,35 +11,33 @@ const FOCAL_POSITIONS: Record<string, string> = {
   "hIyN0IbnhWN4qti9535q": "center 70%",
 };
 
-const getFocalPosition = (slide: any) => {
+const getFocalPosition = (slide: HeroSlide | null) => {
   if (!slide) return "center";
-  
   if (slide.alt_text) {
     const match = slide.alt_text.match(/\[focal:\s*([^\]]+)\]/);
-    if (match && match[1]) {
-      return match[1].trim();
-    }
+    if (match && match[1]) return match[1].trim();
   }
-
-  if (slide.id && FOCAL_POSITIONS[slide.id]) {
-    return FOCAL_POSITIONS[slide.id];
-  }
-
+  if (slide.id && FOCAL_POSITIONS[slide.id]) return FOCAL_POSITIONS[slide.id];
   return "center";
 };
 
+const imageVariants = {
+  enter: { opacity: 0 },
+  center: { opacity: 1 },
+  exit: { opacity: 0 },
+};
+
 const HeroSlider = () => {
+  const { getSetting } = useSiteSettings();
+  const siteName = getSetting("site_name");
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
-  const [slides, setSlides] = useState<any[]>([]);
+  const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchPublicHeroSlides()
       .then((res) => {
-        if (Array.isArray(res.data) && res.data.length > 0) {
-          setSlides(res.data);
-        }
+        if (Array.isArray(res.data) && res.data.length > 0) setSlides(res.data);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -46,28 +46,14 @@ const HeroSlider = () => {
   useEffect(() => {
     if (slides.length <= 1) return;
     const timer = setInterval(() => {
-      setDirection(1);
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 8000);
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  const prev = () => {
-    setDirection(-1);
-    setCurrent((c) => (c - 1 + slides.length) % slides.length);
-  };
-  const next = () => {
-    setDirection(1);
-    setCurrent((c) => (c + 1) % slides.length);
-  };
+  const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
+  const next = () => setCurrent((c) => (c + 1) % slides.length);
 
-  const imageVariants = {
-    enter: { opacity: 0 },
-    center: { opacity: 1 },
-    exit: { opacity: 0 },
-  };
-
-  // Loading state
   if (loading) {
     return (
       <section className="relative h-[100vh] bg-[hsl(220,30%,12%)] flex items-center justify-center">
@@ -76,12 +62,11 @@ const HeroSlider = () => {
     );
   }
 
-  // Empty state - no slides added yet
   if (slides.length === 0) {
     return (
       <section className="relative h-[100vh] bg-[hsl(220,30%,12%)] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="font-display text-5xl md:text-7xl text-white/80 tracking-wide mb-4">Dream Scenario</h1>
+          <h1 className="font-display text-5xl md:text-7xl text-white/80 tracking-wide mb-4">{siteName}</h1>
           <div className="w-24 h-px bg-white/30 mx-auto my-6" />
           <p className="font-body text-sm text-white/50 tracking-[0.3em] uppercase">Add hero slides from the admin panel</p>
         </div>
@@ -116,7 +101,7 @@ const HeroSlider = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Premium Centered Luxury Title Overlay */}
+      {/* Studio name overlay */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -130,7 +115,7 @@ const HeroSlider = () => {
             textShadow: "0 8px 30px rgba(0,0,0,0.35), 0 0 50px rgba(0,0,0,0.15)",
           }}
         >
-          Dream Scenario
+          {siteName}
         </h1>
         <p
           className="font-display italic text-white/90 tracking-wide select-none"
@@ -166,15 +151,11 @@ const HeroSlider = () => {
         </>
       )}
 
-      {/* Dots */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-        {slides.map((_: any, i: number) => (
+        {slides.map((_: HeroSlide, i: number) => (
           <button
             key={i}
-            onClick={() => {
-              setDirection(i > current ? 1 : -1);
-              setCurrent(i);
-            }}
+            onClick={() => setCurrent(i)}
             className="relative h-2 transition-all"
             style={{ width: i === current ? 24 : 8 }}
             aria-label={`Slide ${i + 1}`}

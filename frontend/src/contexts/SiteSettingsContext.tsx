@@ -1,0 +1,105 @@
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { fetchPublicSettings } from "@/lib/publicApi";
+
+const SETTINGS_STORAGE_KEY = "site-settings-cache";
+
+// Public-facing defaults used only after settings have finished loading.
+export const SETTING_DEFAULTS: Record<string, string> = {
+  site_name: "Your Photography Studio",
+  contact_email: "hello@yourstudio.com",
+  contact_phone: "+1 (555) 000-0000",
+  address: "City, Country",
+  instagram_url: "#",
+  facebook_url: "#",
+  about_title: "More Than a Photographer - A Storyteller",
+  about_tagline: "Capturing the moments that take your breath away",
+  about_description: "",
+  about_description_2: "",
+  about_image_url: "",
+  stat_weddings: "200+",
+  stat_happy_couples: "200+",
+  stat_years: "8",
+  stat_countries: "15",
+};
+
+interface SiteSettingsContextType {
+  settings: Record<string, string>;
+  isLoaded: boolean;
+  getSetting: (key: string) => string;
+  refreshSettings: () => Promise<void>;
+}
+
+const readCachedSettings = (): Record<string, string> => {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
+  try {
+    const cached = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (!cached) {
+      return {};
+    }
+
+    const parsed = JSON.parse(cached);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return {};
+    }
+
+    return parsed as Record<string, string>;
+  } catch {
+    return {};
+  }
+};
+
+const SiteSettingsContext = createContext<SiteSettingsContextType | undefined>(undefined);
+
+export const SiteSettingsProvider = ({ children }: { children: ReactNode }) => {
+  const [settings, setSettings] = useState<Record<string, string>>(() => readCachedSettings());
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const loadSettings = useCallback(async () => {
+    try {
+      const res = await fetchPublicSettings();
+      if (res.data && typeof res.data === "object" && !Array.isArray(res.data)) {
+        const nextSettings = res.data as Record<string, string>;
+        setSettings(nextSettings);
+
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(nextSettings));
+        }
+      }
+    } catch {
+      // Ignore request failures and fall back to cached or default values.
+    } finally {
+      setIsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadSettings();
+  }, [loadSettings]);
+
+  const getSetting = (key: string): string => {
+    const val = settings[key];
+    if (val && val.trim()) {
+      return val;
+    }
+
+    return isLoaded ? (SETTING_DEFAULTS[key] ?? "") : "";
+  };
+
+  return (
+    <SiteSettingsContext.Provider value={{ settings, isLoaded, getSetting, refreshSettings: loadSettings }}>
+      {children}
+    </SiteSettingsContext.Provider>
+  );
+};
+
+export const useSiteSettings = () => {
+  const ctx = useContext(SiteSettingsContext);
+  if (!ctx) {
+    throw new Error("useSiteSettings must be used within SiteSettingsProvider");
+  }
+  return ctx;
+};

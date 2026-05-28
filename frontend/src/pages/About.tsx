@@ -6,11 +6,12 @@ import Layout from "@/components/Layout";
 import SectionTitle from "@/components/SectionTitle";
 import { ScrollReveal, StaggerReveal, StaggerItem, fadeLeft, fadeRight, AnimatedNumber } from "@/components/animations";
 import { fetchPublicTeamMembers, fetchPublicSettings } from "@/lib/publicApi";
+import type { TeamMember } from "@/types";
 import hero1 from "@/assets/hero-1.jpg";
 import { Camera, Heart, Award, Globe } from "lucide-react";
 
 const About = () => {
-  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
@@ -123,7 +124,7 @@ const About = () => {
           <div className="container mx-auto">
             <SectionTitle title="Our Team" subtitle="A passionate group of creatives dedicated to capturing your most precious moments." />
             <StaggerReveal className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
-              {teamMembers.map((member: any) => (
+              {teamMembers.map((member: TeamMember) => (
                 <StaggerItem key={member.id} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm">
                   <div className="text-center">
                     <div className="overflow-hidden mb-4">

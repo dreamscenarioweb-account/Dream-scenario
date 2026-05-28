@@ -6,11 +6,12 @@ import Layout from "@/components/Layout";
 import NotFound from "./NotFound";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/animations";
 import { fetchPublicAlbumBySlug } from "@/lib/publicApi";
+import type { Album, Photo } from "@/types";
 
 const Album = () => {
   const { id } = useParams();
   const [lightbox, setLightbox] = useState<number | null>(null);
-  const [album, setAlbum] = useState<any>(null);
+  const [album, setAlbum] = useState<(Album & { photos?: Photo[] }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -93,7 +94,7 @@ const Album = () => {
           {/* Photos Grid - Masonry style approximation */}
           {album.photos && album.photos.length > 0 ? (
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {album.photos.map((photo: any, i: number) => (
+              {album.photos.map((photo: Photo, i: number) => (
                 <StaggerItem key={photo.id || i}>
                   <motion.div
                     className={`overflow-hidden cursor-pointer relative group rounded-sm shadow-sm ${i % 4 === 0 || i % 4 === 3 ? "md:col-span-2 lg:col-span-2 h-[500px]" : "h-[400px]"}`}

@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useState, type ElementType } from "react";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  LayoutDashboard, Images, List, FileText, Mail,
-  Layers, MessageSquareQuote, LayoutGrid, Briefcase, Users,
+  LayoutDashboard, Images, List, FileText,
+  Layers, MessageSquareQuote, Briefcase, Users,
   LogOut, Menu, FileEdit, Cog
 } from "lucide-react";
+
+interface NavItem {
+  label: string;
+  path: string;
+  icon: ElementType;
+}
 
 const navItems = [
   { label: "Dashboard", path: "/admin", icon: LayoutDashboard },
   { label: "Albums", path: "/admin/albums", icon: Images },
   { label: "Categories", path: "/admin/categories", icon: List },
   { label: "Quotes", path: "/admin/messages", icon: FileText },
-  { label: "Contacts", path: "/admin/messages", icon: Mail },
 ];
 
 const contentItems = [
@@ -30,11 +35,15 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isActive = (path: string) => {
+    const [pathname, search] = path.split("?");
     if (path === "/admin") return location.pathname === "/admin";
-    return location.pathname.startsWith(path);
+    if (search) {
+      return location.pathname === pathname && location.search === `?${search}`;
+    }
+    return location.pathname.startsWith(pathname) && !location.search;
   };
 
-  const SidebarLink = ({ item }: { item: any }) => {
+  const SidebarLink = ({ item }: { item: NavItem }) => {
     const active = isActive(item.path);
     const Icon = item.icon;
     return (

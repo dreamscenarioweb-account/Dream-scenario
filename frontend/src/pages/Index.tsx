@@ -7,12 +7,13 @@ import HeroSlider from "@/components/HeroSlider";
 import SectionTitle from "@/components/SectionTitle";
 import { ScrollReveal, StaggerReveal, StaggerItem, fadeLeft, fadeRight, HoverCard } from "@/components/animations";
 import { fetchPublicServices, fetchPublicAlbums, fetchPublicTestimonials, fetchPublicBlogPosts } from "@/lib/publicApi";
+import type { Service, Album, Testimonial, BlogPost } from "@/types";
 
 const Index = () => {
-  const [services, setServices] = useState<any[]>([]);
-  const [albums, setAlbums] = useState<any[]>([]);
-  const [testimonials, setTestimonials] = useState<any[]>([]);
-  const [tips, setTips] = useState<any[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [tips, setTips] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const Index = () => {
               subtitle="With 8 years of experience in capturing celebrations across the globe, our team is here to make sure you have the best day of your life."
             />
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {services.map((s: any) => (
+              {services.map((s: Service) => (
                 <StaggerItem key={s.id || s.title}>
                   <HoverCard className="text-center">
                     <div className="overflow-hidden mb-6">
@@ -87,7 +88,7 @@ const Index = () => {
               subtitle="Throughout the years we have had the opportunity to photograph many wonderful couples."
             />
             <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {albums.map((a: any) => (
+              {albums.map((a: Album) => (
                 <StaggerItem key={a.id || a.title}>
                   <Link to={a.slug ? `/portfolio/${a.slug}` : "/portfolio"} className="group relative overflow-hidden block">
                     <motion.img
@@ -134,7 +135,7 @@ const Index = () => {
               light
             />
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {testimonials.map((t: any) => (
+              {testimonials.map((t: Testimonial) => (
                 <StaggerItem key={t.id || t.couple}>
                   <HoverCard className="bg-background/5 border border-primary-foreground/10 p-10 h-full backdrop-blur-sm hover:bg-background/10 transition-colors flex flex-col justify-center items-center text-center rounded-lg shadow-luxury">
                     {t.image_url && (
@@ -169,7 +170,7 @@ const Index = () => {
               subtitle="Wedding Planning Tips to better organise your wedding & make your wedding unforgettable!"
             />
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {tips.map((tip: any) => (
+              {tips.map((tip: BlogPost) => (
                 <StaggerItem key={tip.id || tip.title}>
                   <Link to="/tips" className="group block">
                     <span className="font-body text-xs tracking-[0.1em] uppercase text-accent">{tip.category || "Tips"}</span>

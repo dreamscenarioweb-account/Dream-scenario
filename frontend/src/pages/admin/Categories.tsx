@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { AlbumCategory } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchCategories, createCategory, updateCategory, deleteCategory } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import { toast } from "sonner";
 const Categories = () => {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<any>(null);
+  const [editingCategory, setEditingCategory] = useState<AlbumCategory | null>(null);
   const [formData, setFormData] = useState({ name: "", display_order: 0 });
 
   const { data: response, isLoading } = useQuery({
@@ -25,7 +26,7 @@ const Categories = () => {
   const categories = Array.isArray(response) ? response : [];
 
   const createMutation = useMutation({
-    mutationFn: (data: any) => createCategory(data),
+    mutationFn: (data: Record<string, unknown>) => createCategory(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_categories"] });
       toast.success("Category created successfully");
@@ -36,7 +37,7 @@ const Categories = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateCategory(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateCategory(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_categories"] });
       toast.success("Category updated successfully");
@@ -65,7 +66,7 @@ const Categories = () => {
     }
   };
 
-  const handleEdit = (cat: any) => {
+  const handleEdit = (cat: AlbumCategory) => {
     setEditingCategory(cat);
     setFormData({ name: cat.name, display_order: cat.display_order || 0 });
     setIsDialogOpen(true);
@@ -130,7 +131,7 @@ const Categories = () => {
                   <TableCell colSpan={3} className="text-center h-32 text-[hsl(215,15%,50%)]">No categories found.</TableCell>
                 </TableRow>
               ) : (
-                categories.sort((a: any, b: any) => a.display_order - b.display_order).map((cat: any) => (
+                categories.sort((a: AlbumCategory, b: AlbumCategory) => a.display_order - b.display_order).map((cat: AlbumCategory) => (
                   <TableRow key={cat.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell className="font-medium text-black">{cat.name}</TableCell>
                     <TableCell className="text-[hsl(215,15%,50%)]">{cat.display_order || 0}</TableCell>
