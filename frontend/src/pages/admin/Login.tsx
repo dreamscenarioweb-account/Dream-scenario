@@ -16,8 +16,8 @@ const Login = () => {
     try {
       await login(email, password);
       navigate("/admin");
-    } catch (err: any) {
-      setError(err.message || "Invalid credentials");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Invalid credentials");
     }
   };
 

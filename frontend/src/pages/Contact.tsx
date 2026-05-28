@@ -31,13 +31,15 @@ const Contact = () => {
     setIsSubmitting(true);
     try {
       await submitQuote({
-        name: form.name,
+        names: form.name,
         email: form.email,
         phone: form.phone,
-        date: form.date,
-        venue: form.venue,
+        event_type: form.service,
+        event_date: form.date,
+        event_venue: form.venue,
         message: form.message,
-        service: form.service,
+        budget: "",
+        hear_about_us: "",
       });
       toast({ title: "Thank you!", description: "We've received your inquiry and will get back to you within 24 hours." });
       setForm({ name: "", email: "", phone: "", date: "", venue: "", message: "", service: "wedding" });

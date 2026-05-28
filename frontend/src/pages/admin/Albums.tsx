@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import type { Album } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchAdminAlbums, createAlbum, updateAlbum, deleteAlbum, uploadImage } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
@@ -12,10 +13,18 @@ import { toast } from "sonner";
 
 const Albums = () => {
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingAlbum, setEditingAlbum] = useState<any>(null);
+  const [editingAlbum, setEditingAlbum] = useState<Album | null>(null);
   const [formData, setFormData] = useState({ title: "", slug: "", category: "", cover_image_url: "", is_published: true });
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("action") === "new") {
+      setIsDialogOpen(true);
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: albumsResponse, isLoading } = useQuery({
     queryKey: ["admin_albums"],
@@ -27,7 +36,7 @@ const Albums = () => {
   const albums = Array.isArray(albumsResponse) ? albumsResponse : [];
 
   const createMutation = useMutation({
-    mutationFn: (data: any) => createAlbum(data),
+    mutationFn: (data: Record<string, unknown>) => createAlbum(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_albums"] });
       toast.success("Album created successfully");
@@ -38,7 +47,7 @@ const Albums = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateAlbum(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateAlbum(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_albums"] });
       toast.success("Album updated successfully");
@@ -81,7 +90,7 @@ const Albums = () => {
     }
   };
 
-  const handleEdit = (album: any) => {
+  const handleEdit = (album: Album) => {
     setEditingAlbum(album);
     setFormData({
       title: album.title,
@@ -170,7 +179,7 @@ const Albums = () => {
                   <TableCell colSpan={5} className="text-center h-32 text-[hsl(215,15%,50%)]">No albums found. Create your first one!</TableCell>
                 </TableRow>
               ) : (
-                albums.map((album: any) => (
+                albums.map((album: Album) => (
                   <TableRow key={album.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell>
                       {album.cover_image_url ? (

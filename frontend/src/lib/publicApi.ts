@@ -1,5 +1,7 @@
 import api from "./api";
 
+type ApiData = Record<string, unknown>;
+
 // Public CMS API - fetches data for public-facing pages
 
 export const fetchPublicHeroSlides = () => api.get("/hero-slides");
@@ -12,5 +14,5 @@ export const fetchPublicBlogPosts = () => api.get("/blog-posts");
 export const fetchPublicAlbums = () => api.get("/albums");
 export const fetchPublicAlbumBySlug = (slug: string) => api.get(`/albums/${slug}`);
 export const fetchPublicCategories = () => api.get("/album-categories");
-export const submitContact = (data: any) => api.post("/contact", data);
-export const submitQuote = (data: any) => api.post("/quote-request", data);
+export const submitContact = (data: ApiData) => api.post("/contact", data);
+export const submitQuote = (data: ApiData) => api.post("/quote-request", data);

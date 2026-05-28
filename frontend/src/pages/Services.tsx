@@ -6,10 +6,11 @@ import Layout from "@/components/Layout";
 import SectionTitle from "@/components/SectionTitle";
 import { ScrollReveal, StaggerReveal, StaggerItem, fadeLeft, fadeRight, HoverCard } from "@/components/animations";
 import { fetchPublicServices } from "@/lib/publicApi";
+import type { Service } from "@/types";
 import hero2 from "@/assets/hero-2.jpg";
 
 const Services = () => {
-  const [servicesList, setServicesList] = useState<any[]>([]);
+  const [servicesList, setServicesList] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,7 +59,7 @@ const Services = () => {
           ) : servicesList.length === 0 ? (
             <p className="text-center text-muted-foreground py-16 font-body">Services coming soon. Check back later!</p>
           ) : (
-            servicesList.map((service: any, i: number) => (
+            servicesList.map((service: Service, i: number) => (
               <div key={service.id || service.title} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
                 <ScrollReveal variants={i % 2 === 0 ? fadeLeft : fadeRight} className={i % 2 === 1 ? "lg:order-2" : ""}>
                   <div className="overflow-hidden">

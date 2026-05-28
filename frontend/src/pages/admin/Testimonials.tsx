@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { Testimonial } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchTestimonials, createTestimonial, updateTestimonial, deleteTestimonial, uploadImage } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 const Testimonials = () => {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingItem, setEditingItem] = useState<Testimonial | null>(null);
   const [formData, setFormData] = useState({ image_url: "", quote: "", couple: "", location: "", rating: 5, display_order: 0, is_active: true });
   const [isUploading, setIsUploading] = useState(false);
 
@@ -28,7 +29,7 @@ const Testimonials = () => {
   const testimonials = Array.isArray(response) ? response : [];
 
   const createMutation = useMutation({
-    mutationFn: (data: any) => createTestimonial(data),
+    mutationFn: (data: Record<string, unknown>) => createTestimonial(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_testimonials"] });
       toast.success("Testimonial created successfully");
@@ -39,7 +40,7 @@ const Testimonials = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateTestimonial(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateTestimonial(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin_testimonials"] });
       toast.success("Testimonial updated successfully");
@@ -83,7 +84,7 @@ const Testimonials = () => {
     }
   };
 
-  const handleEdit = (item: any) => {
+  const handleEdit = (item: Testimonial) => {
     setEditingItem(item);
     setFormData({
       image_url: item.image_url || "",
@@ -193,7 +194,7 @@ const Testimonials = () => {
                   <TableCell colSpan={5} className="text-center h-32 text-[hsl(215,15%,50%)]">No testimonials found.</TableCell>
                 </TableRow>
               ) : (
-                testimonials.sort((a: any, b: any) => a.display_order - b.display_order).map((item: any) => (
+                testimonials.sort((a: Testimonial, b: Testimonial) => a.display_order - b.display_order).map((item: Testimonial) => (
                   <TableRow key={item.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell>
                       {item.image_url ? (
