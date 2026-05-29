@@ -127,10 +127,10 @@ const Portfolio = () => {
                           whileHover={{ scale: 1.1 }}
                           transition={{ duration: 0.7 }}
                         />
-                        <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/40 group-hover:backdrop-blur-sm transition-all duration-700 flex items-center justify-center">
-                          <div className="opacity-0 group-hover:opacity-100 transition-all duration-700 text-center translate-y-4 group-hover:translate-y-0 p-6 bg-background/20 backdrop-blur-md rounded-xl border border-white/20 shadow-glass">
-                            <h3 className="font-display text-2xl text-white drop-shadow-md mb-2">{item.title}</h3>
-                            <p className="font-body text-xs tracking-widest uppercase text-white/90">{item.category}</p>
+                        <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/60 transition-all duration-500 flex items-end p-6">
+                          <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                            <h3 className="font-display text-xl text-primary-foreground">{item.title}</h3>
+                            <p className="font-body text-xs text-primary-foreground/70">{item.category || "Wedding Shoot"}</p>
                           </div>
                         </div>
                       </Link>
