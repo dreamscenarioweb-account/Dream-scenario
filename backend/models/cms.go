@@ -111,7 +111,7 @@ type Service struct {
 type ServiceRequest struct {
 	Title        string   `json:"title"         binding:"required"`
 	IconName     string   `json:"icon_name"     binding:"required"`
-	ImageURL     string   `json:"image_url"     binding:"required"`
+	ImageURL     string   `json:"image_url"`
 	Description  string   `json:"description"`
 	Features     []string `json:"features"`
 	DisplayOrder int      `json:"display_order"`
