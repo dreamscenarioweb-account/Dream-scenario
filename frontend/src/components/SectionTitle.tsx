@@ -17,7 +17,6 @@ const SectionTitle = ({ title, subtitle, light }: SectionTitleProps) => {
           {subtitle}
         </p>
       )}
-      <div className={`w-16 h-px mx-auto mt-6 ${light ? "bg-primary-foreground/30" : "bg-accent"}`} />
     </ScrollReveal>
   );
 };
