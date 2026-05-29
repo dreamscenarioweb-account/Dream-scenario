@@ -2,12 +2,21 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import Layout from "@/components/Layout";
 import SectionTitle from "@/components/SectionTitle";
-import { ScrollReveal, StaggerReveal, StaggerItem, fadeLeft, fadeRight, HoverCard } from "@/components/animations";
+import { ScrollReveal, StaggerReveal, StaggerItem, HoverCard } from "@/components/animations";
 import { fetchPublicServices } from "@/lib/publicApi";
 import type { Service } from "@/types";
 import hero2 from "@/assets/hero-2.jpg";
+
+const DynamicIcon = ({ name, className, strokeWidth = 2 }: { name: string; className?: string; strokeWidth?: number }) => {
+  const IconComponent = (LucideIcons as any)[name];
+  if (!IconComponent) {
+    return <LucideIcons.Briefcase className={className} strokeWidth={strokeWidth} />;
+  }
+  return <IconComponent className={className} strokeWidth={strokeWidth} />;
+};
 
 const Services = () => {
   const [servicesList, setServicesList] = useState<Service[]>([]);
@@ -59,42 +68,39 @@ const Services = () => {
           ) : servicesList.length === 0 ? (
             <p className="text-center text-muted-foreground py-16 font-body">Services coming soon. Check back later!</p>
           ) : (
-            servicesList.map((service: Service, i: number) => (
-              <div key={service.id || service.title} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
-                <ScrollReveal variants={i % 2 === 0 ? fadeLeft : fadeRight} className={i % 2 === 1 ? "lg:order-2" : ""}>
-                  <div className="overflow-hidden">
-                    <motion.img
-                      src={service.image_url}
-                      alt={service.title}
-                      loading="lazy"
-                      width={800}
-                      height={1000}
-                      className="w-full h-[400px] object-cover"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.7 }}
-                    />
-                  </div>
-                </ScrollReveal>
-                <ScrollReveal variants={i % 2 === 0 ? fadeRight : fadeLeft} delay={0.2} className={`relative ${i % 2 === 1 ? "lg:order-1" : ""}`}>
-                  <span className="absolute -top-16 -left-8 text-[8rem] font-display text-accent/10 leading-none select-none z-[-1] pointer-events-none">
-                    0{i + 1}
-                  </span>
-                  <h3 className="font-display text-4xl mb-6 text-primary">{service.title}</h3>
-                  <div className="w-12 h-px bg-accent mb-6" />
-                  <p className="font-body text-sm md:text-base text-muted-foreground leading-loose font-light">{service.description}</p>
-                  {service.features && service.features.length > 0 && (
-                    <ul className="mt-6 space-y-2">
-                      {service.features.map((f: string) => (
-                        <li key={f} className="font-body text-sm text-muted-foreground flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-accent rounded-full" />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </ScrollReveal>
-              </div>
-            ))
+            <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16 mt-16">
+              {servicesList.sort((a, b) => a.display_order - b.display_order).map((service: Service, i: number) => (
+                <StaggerItem key={service.id || service.title}>
+                  <HoverCard className="text-center p-8 bg-white border border-[hsl(215,20%,90%)] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-all duration-500 flex flex-col items-center h-full">
+                    {/* Circle Icon Container */}
+                    <div className="w-20 h-20 bg-[hsl(206,21%,63%)] hover:bg-[hsl(206,21%,58%)] rounded-full flex items-center justify-center mb-6 text-white shadow-md transition-colors duration-500">
+                      <DynamicIcon name={service.icon_name} className="w-8 h-8" strokeWidth={1.5} />
+                    </div>
+
+                    <h3 className="font-display text-lg tracking-[0.2em] uppercase text-primary mb-3">
+                      {service.title}
+                    </h3>
+                    
+                    <div className="w-8 h-px bg-accent/40 mb-4" />
+
+                    <p className="font-body text-xs md:text-sm text-muted-foreground leading-relaxed max-w-xs mb-6 flex-grow font-light">
+                      {service.description}
+                    </p>
+
+                    {service.features && service.features.length > 0 && (
+                      <ul className="space-y-2 border-t border-[hsl(215,20%,95%)] pt-4 w-full text-center">
+                        {service.features.map((f: string) => (
+                          <li key={f} className="font-body text-xs text-muted-foreground/80 flex items-center justify-center gap-2">
+                            <span className="w-1 h-1 bg-[hsl(206,21%,63%)] rounded-full" />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </HoverCard>
+                </StaggerItem>
+              ))}
+            </StaggerReveal>
           )}
         </div>
       </section>

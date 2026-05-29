@@ -8,9 +8,35 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Loader2, Image as ImageIcon } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
+
+const DynamicIcon = ({ name, className, strokeWidth = 2 }: { name: string; className?: string; strokeWidth?: number }) => {
+  const IconComponent = (LucideIcons as any)[name];
+  if (!IconComponent) {
+    return <LucideIcons.Briefcase className={className} strokeWidth={strokeWidth} />;
+  }
+  return <IconComponent className={className} strokeWidth={strokeWidth} />;
+};
+
+const CURATED_ICONS = [
+  { name: "Heart", label: "Heart (Weddings)" },
+  { name: "Gem", label: "Gem (Engagements)" },
+  { name: "Camera", label: "Camera (Casual Shoots)" },
+  { name: "PartyPopper", label: "Popper (Homecomings)" },
+  { name: "Video", label: "Video (Cinematography)" },
+  { name: "Smile", label: "Smile (Photobooths)" },
+  { name: "Sparkles", label: "Sparkles" },
+  { name: "Flower", label: "Flower" },
+  { name: "GlassWater", label: "Glass" },
+  { name: "MapPin", label: "Map Pin" },
+  { name: "Users", label: "Users" },
+  { name: "Award", label: "Award" },
+  { name: "Gift", label: "Gift" },
+  { name: "Music", label: "Music" },
+];
 
 const Services = () => {
   const queryClient = useQueryClient();
@@ -80,7 +106,7 @@ const Services = () => {
     const payload = { 
       title: formData.title,
       icon_name: formData.icon_name || "Briefcase",
-      image_url: formData.image_url,
+      image_url: formData.image_url || "placeholder",
       description: formData.description,
       features: features,
       display_order: Number(formData.display_order),
@@ -143,10 +169,38 @@ const Services = () => {
                 <Label htmlFor="features" className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Features (One per line)</Label>
                 <Textarea id="features" value={formData.featuresStr} onChange={(e) => setFormData({ ...formData, featuresStr: e.target.value })} rows={4} placeholder="High-res photos&#10;Online gallery&#10;Drone footage" className="border-[hsl(215,20%,90%)] rounded-lg focus-visible:ring-black" />
               </div>
+
+              {/* Curated Icon Selector Grid */}
+              <div className="space-y-2">
+                <Label className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Select Icon</Label>
+                <div className="grid grid-cols-5 gap-2 p-3 bg-gray-50 rounded-lg border border-[hsl(215,20%,90%)] max-h-36 overflow-y-auto">
+                  {CURATED_ICONS.map((ico) => {
+                    const IconComponent = (LucideIcons as any)[ico.name] || LucideIcons.Briefcase;
+                    const isSelected = formData.icon_name === ico.name;
+                    return (
+                      <button
+                        type="button"
+                        key={ico.name}
+                        onClick={() => setFormData({ ...formData, icon_name: ico.name })}
+                        title={ico.label}
+                        className={`flex flex-col items-center justify-center p-2 rounded-md border transition-all ${
+                          isSelected
+                            ? "bg-black text-white border-black"
+                            : "bg-white text-gray-600 border-gray-200 hover:border-black"
+                        }`}
+                      >
+                        <IconComponent className="w-5 h-5" strokeWidth={1.5} />
+                        <span className="text-[8px] mt-1 truncate max-w-full">{ico.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="icon_name" className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Icon Name (Lucide)</Label>
-                  <Input id="icon_name" value={formData.icon_name} onChange={(e) => setFormData({ ...formData, icon_name: e.target.value })} placeholder="Camera" className="border-[hsl(215,20%,90%)] rounded-lg focus-visible:ring-black" />
+                  <Label htmlFor="icon_name" className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Custom Icon (Lucide)</Label>
+                  <Input id="icon_name" value={formData.icon_name} onChange={(e) => setFormData({ ...formData, icon_name: e.target.value })} placeholder="Briefcase" className="border-[hsl(215,20%,90%)] rounded-lg focus-visible:ring-black" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="display_order" className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Display Order</Label>
@@ -154,12 +208,12 @@ const Services = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="image" className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Cover Image</Label>
+                <Label htmlFor="image" className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Cover Image (Optional)</Label>
                 <div className="flex gap-2">
                   <Input id="image" type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploading} className="flex-1 cursor-pointer border-[hsl(215,20%,90%)] rounded-lg file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-black hover:file:bg-gray-200" />
                   {isUploading && <Loader2 className="h-4 w-4 animate-spin my-auto text-black" />}
                 </div>
-                {formData.image_url && (
+                {formData.image_url && formData.image_url !== "placeholder" && (
                   <div className="mt-2 aspect-video w-full relative rounded-lg overflow-hidden border border-[hsl(215,20%,90%)] shadow-sm">
                     <img src={formData.image_url} alt="Preview" className="object-cover w-full h-full" />
                   </div>
@@ -187,7 +241,7 @@ const Services = () => {
           <Table>
             <TableHeader>
               <TableRow className="bg-[hsl(0,0%,98%)] hover:bg-[hsl(0,0%,98%)] font-body text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">
-                <TableHead className="w-[100px] h-12">Cover</TableHead>
+                <TableHead className="w-[80px] h-12">Icon</TableHead>
                 <TableHead>Title</TableHead>
                 <TableHead>Order</TableHead>
                 <TableHead>Status</TableHead>
@@ -207,15 +261,9 @@ const Services = () => {
                 services.sort((a: Service, b: Service) => a.display_order - b.display_order).map((item: Service) => (
                   <TableRow key={item.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell>
-                      {item.image_url ? (
-                        <div className="w-16 h-12 rounded-lg overflow-hidden shadow-sm border border-[hsl(215,20%,90%)]">
-                          <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
-                        </div>
-                      ) : (
-                        <div className="w-16 h-12 rounded-lg bg-gray-50 flex items-center justify-center border border-[hsl(215,20%,90%)]">
-                          <ImageIcon className="h-5 w-5 text-gray-300" />
-                        </div>
-                      )}
+                      <div className="w-10 h-10 rounded-full bg-[hsl(206,21%,63%)] flex items-center justify-center text-white shadow-sm">
+                        <DynamicIcon name={item.icon_name} className="w-5 h-5" strokeWidth={1.5} />
+                      </div>
                     </TableCell>
                     <TableCell className="font-medium text-black">{item.title}</TableCell>
                     <TableCell className="text-[hsl(215,15%,50%)]">{item.display_order || 0}</TableCell>
