@@ -79,8 +79,7 @@ const Tips = () => {
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           <h1 className="font-display text-5xl md:text-7xl text-white drop-shadow-xl tracking-wide">Tips & Inspiration</h1>
-          <div className="w-24 h-px bg-white/30 mx-auto my-6" />
-          <p className="font-body text-sm md:text-base text-white/80 tracking-[0.3em] uppercase">WEDDING PLANNING MADE EASY</p>
+          <p className="font-body text-sm md:text-base text-white/80 tracking-[0.3em] uppercase mt-6">WEDDING PLANNING MADE EASY</p>
         </motion.div>
       </section>
 

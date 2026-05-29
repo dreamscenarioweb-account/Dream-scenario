@@ -80,8 +80,7 @@ const Contact = () => {
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           <h1 className="font-display text-6xl md:text-8xl text-white drop-shadow-xl tracking-wide">Contact Us</h1>
-          <div className="w-24 h-px bg-white/50 mx-auto my-6" />
-          <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase">LET'S PLAN YOUR SPECIAL DAY</p>
+          <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase mt-6">LET'S PLAN YOUR SPECIAL DAY</p>
         </motion.div>
       </section>
 

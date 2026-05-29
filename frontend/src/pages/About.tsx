@@ -64,8 +64,7 @@ const About = () => {
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           <h1 className="font-display text-6xl md:text-8xl text-white drop-shadow-xl tracking-wide">About Us</h1>
-          <div className="w-24 h-px bg-white/50 mx-auto my-6" />
-          <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase">OUR STORY & PASSION</p>
+          <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase mt-6">OUR STORY & PASSION</p>
         </motion.div>
       </section>
 
@@ -73,8 +72,7 @@ const About = () => {
       <section className="py-20 px-4">
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <ScrollReveal variants={fadeLeft}>
-            <h2 className="font-display text-5xl md:text-6xl mb-4 text-primary">{aboutTitle}</h2>
-            <div className="w-16 h-px bg-accent mb-8" />
+            <h2 className="font-display text-5xl md:text-6xl mb-8 text-primary">{aboutTitle}</h2>
             <p className="font-display text-xl md:text-2xl text-accent/80 italic mb-8 leading-relaxed">
               "{aboutTagline}"
             </p>

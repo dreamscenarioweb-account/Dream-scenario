@@ -8,14 +8,19 @@ import HeroSlider from "@/components/HeroSlider";
 import SectionTitle from "@/components/SectionTitle";
 import { ScrollReveal, StaggerReveal, StaggerItem, HoverCard } from "@/components/animations";
 import { fetchPublicServices, fetchPublicAlbums, fetchPublicTestimonials, fetchPublicBlogPosts } from "@/lib/publicApi";
+import { customIconsMap } from "@/components/CustomIcons";
 import type { Service, Album, Testimonial, BlogPost } from "@/types";
 
-const DynamicIcon = ({ name, className, strokeWidth = 2 }: { name: string; className?: string; strokeWidth?: number }) => {
+const DynamicIcon = ({ name, className, strokeWidth = 2, size = 32 }: { name: string; className?: string; strokeWidth?: number; size?: number }) => {
+  const CustomIconComponent = customIconsMap[name];
+  if (CustomIconComponent) {
+    return <CustomIconComponent className={className} size={size} />;
+  }
   const IconComponent = (LucideIcons as any)[name];
   if (!IconComponent) {
-    return <LucideIcons.Briefcase className={className} strokeWidth={strokeWidth} />;
+    return <LucideIcons.Briefcase className={className} strokeWidth={strokeWidth} size={size} />;
   }
-  return <IconComponent className={className} strokeWidth={strokeWidth} />;
+  return <IconComponent className={className} strokeWidth={strokeWidth} size={size} />;
 };
 
 const Index = () => {
@@ -53,34 +58,21 @@ const Index = () => {
               subtitle="With 8 years of experience in capturing celebrations across the globe, our team is here to make sure you have the best day of your life."
             />
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16 mt-12">
-              {services.sort((a, b) => a.display_order - b.display_order).map((s: Service) => (
+              {services.sort((a, b) => a.display_order - b.display_order).slice(0, 3).map((s: Service) => (
                 <StaggerItem key={s.id || s.title}>
-                  <HoverCard className="text-center p-8 bg-white border border-[hsl(215,20%,90%)] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-all duration-500 flex flex-col items-center h-full">
+                  <HoverCard className="text-center flex flex-col items-center h-full max-w-sm mx-auto transition-transform duration-500 hover:scale-[1.02]">
                     {/* Circle Icon Container */}
-                    <div className="w-20 h-20 bg-[hsl(206,21%,63%)] hover:bg-[hsl(206,21%,58%)] rounded-full flex items-center justify-center mb-6 text-white shadow-md transition-colors duration-500">
-                      <DynamicIcon name={s.icon_name} className="w-8 h-8" strokeWidth={1.5} />
+                    <div className="w-24 h-24 bg-[hsl(206,21%,63%)] hover:bg-[hsl(206,21%,58%)] rounded-full flex items-center justify-center mb-6 text-white shadow-md transition-colors duration-500">
+                      <DynamicIcon name={s.icon_name} className="w-12 h-12" strokeWidth={1.2} size={48} />
                     </div>
 
                     <h3 className="font-display text-lg tracking-[0.2em] uppercase text-primary mb-3">
                       {s.title}
                     </h3>
                     
-                    <div className="w-8 h-px bg-accent/40 mb-4" />
-
                     <p className="font-body text-xs md:text-sm text-muted-foreground leading-relaxed max-w-xs mb-6 flex-grow font-light">
                       {s.description}
                     </p>
-
-                    {s.features && s.features.length > 0 && (
-                      <ul className="space-y-2 border-t border-[hsl(215,20%,95%)] pt-4 w-full text-center">
-                        {s.features.map((f: string) => (
-                          <li key={f} className="font-body text-xs text-muted-foreground/80 flex items-center justify-center gap-2">
-                            <span className="w-1 h-1 bg-[hsl(206,21%,63%)] rounded-full" />
-                            {f}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
                   </HoverCard>
                 </StaggerItem>
               ))}

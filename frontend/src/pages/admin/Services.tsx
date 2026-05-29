@@ -12,22 +12,27 @@ import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
+import { customIconsMap } from "@/components/CustomIcons";
 
-const DynamicIcon = ({ name, className, strokeWidth = 2 }: { name: string; className?: string; strokeWidth?: number }) => {
+const DynamicIcon = ({ name, className, strokeWidth = 2, size = 20 }: { name: string; className?: string; strokeWidth?: number; size?: number }) => {
+  const CustomIconComponent = customIconsMap[name];
+  if (CustomIconComponent) {
+    return <CustomIconComponent className={className} size={size} />;
+  }
   const IconComponent = (LucideIcons as any)[name];
   if (!IconComponent) {
-    return <LucideIcons.Briefcase className={className} strokeWidth={strokeWidth} />;
+    return <LucideIcons.Briefcase className={className} strokeWidth={strokeWidth} size={size} />;
   }
-  return <IconComponent className={className} strokeWidth={strokeWidth} />;
+  return <IconComponent className={className} strokeWidth={strokeWidth} size={size} />;
 };
 
 const CURATED_ICONS = [
-  { name: "Heart", label: "Heart (Weddings)" },
-  { name: "Gem", label: "Gem (Engagements)" },
-  { name: "Camera", label: "Camera (Casual Shoots)" },
-  { name: "PartyPopper", label: "Popper (Homecomings)" },
-  { name: "Video", label: "Video (Cinematography)" },
-  { name: "Smile", label: "Smile (Photobooths)" },
+  { name: "Weddings", label: "Weddings (Hearts/Flutes)" },
+  { name: "Engagements", label: "Engagements (Diamond Ring)" },
+  { name: "CasualShoots", label: "Casual Shoots (SLR Camera)" },
+  { name: "Homecomings", label: "Homecomings (Floral Arch)" },
+  { name: "Cinematography", label: "Cinematography (Film Camera)" },
+  { name: "Photobooths", label: "Photobooths (Heart Balloons)" },
   { name: "Sparkles", label: "Sparkles" },
   { name: "Flower", label: "Flower" },
   { name: "GlassWater", label: "Glass" },
@@ -175,7 +180,6 @@ const Services = () => {
                 <Label className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Select Icon</Label>
                 <div className="grid grid-cols-5 gap-2 p-3 bg-gray-50 rounded-lg border border-[hsl(215,20%,90%)] max-h-36 overflow-y-auto">
                   {CURATED_ICONS.map((ico) => {
-                    const IconComponent = (LucideIcons as any)[ico.name] || LucideIcons.Briefcase;
                     const isSelected = formData.icon_name === ico.name;
                     return (
                       <button
@@ -189,7 +193,7 @@ const Services = () => {
                             : "bg-white text-gray-600 border-gray-200 hover:border-black"
                         }`}
                       >
-                        <IconComponent className="w-5 h-5" strokeWidth={1.5} />
+                        <DynamicIcon name={ico.name} className="w-5 h-5" strokeWidth={1.2} size={20} />
                         <span className="text-[8px] mt-1 truncate max-w-full">{ico.name}</span>
                       </button>
                     );
@@ -261,8 +265,8 @@ const Services = () => {
                 services.sort((a: Service, b: Service) => a.display_order - b.display_order).map((item: Service) => (
                   <TableRow key={item.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell>
-                      <div className="w-10 h-10 rounded-full bg-[hsl(206,21%,63%)] flex items-center justify-center text-white shadow-sm">
-                        <DynamicIcon name={item.icon_name} className="w-5 h-5" strokeWidth={1.5} />
+                      <div className="w-12 h-12 rounded-full bg-[hsl(206,21%,63%)] flex items-center justify-center text-white shadow-sm">
+                        <DynamicIcon name={item.icon_name} className="w-6 h-6" strokeWidth={1.2} size={24} />
                       </div>
                     </TableCell>
                     <TableCell className="font-medium text-black">{item.title}</TableCell>

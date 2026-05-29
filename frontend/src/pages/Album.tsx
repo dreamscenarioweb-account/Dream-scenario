@@ -66,8 +66,7 @@ const Album = () => {
           <h1 className="font-display text-5xl md:text-7xl text-white drop-shadow-xl tracking-wide mb-4">
             {album.title}
           </h1>
-          <div className="w-24 h-px bg-white/50 mx-auto my-6" />
-          <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase">
+          <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase mt-6">
             {album.category?.toUpperCase() || ''} SHOOT
           </p>
         </motion.div>
