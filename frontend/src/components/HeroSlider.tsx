@@ -12,13 +12,13 @@ const FOCAL_POSITIONS: Record<string, string> = {
 };
 
 const getFocalPosition = (slide: HeroSlide | null) => {
-  if (!slide) return "center";
+  if (!slide) return "bottom";
   if (slide.alt_text) {
     const match = slide.alt_text.match(/\[focal:\s*([^\]]+)\]/);
     if (match && match[1]) return match[1].trim();
   }
   if (slide.id && FOCAL_POSITIONS[slide.id]) return FOCAL_POSITIONS[slide.id];
-  return "center";
+  return "bottom";
 };
 
 const imageVariants = {
@@ -101,32 +101,7 @@ const HeroSlider = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Studio name overlay */}
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center pointer-events-none px-6"
-      >
-        <h1
-          className="font-body font-extralight text-white tracking-[0.2em] uppercase leading-none select-none mb-3 sm:mb-4 md:mb-5"
-          style={{
-            fontSize: "clamp(1.5rem, 6.5vw, 6.5rem)",
-            textShadow: "0 8px 30px rgba(0,0,0,0.35), 0 0 50px rgba(0,0,0,0.15)",
-          }}
-        >
-          {siteName}
-        </h1>
-        <p
-          className="font-display italic text-white/90 tracking-wide select-none"
-          style={{
-            fontSize: "clamp(0.9rem, 2.2vw, 1.8rem)",
-            textShadow: "0 4px 15px rgba(0,0,0,0.3), 0 0 30px rgba(0,0,0,0.15)",
-          }}
-        >
-          Allow us to capture your magic
-        </p>
-      </motion.div>
+
 
       {slides.length > 1 && (
         <>
