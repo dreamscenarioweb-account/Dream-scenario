@@ -111,13 +111,13 @@ const Index = () => {
       <section className="relative py-24 bg-muted/20 overflow-visible">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-            {/* Left Image column (overlapping offset) */}
-            <div className="md:col-span-5 relative h-80 md:h-[450px] mb-8 md:mb-0">
-              <ScrollReveal className="h-full w-full">
+            {/* Left Image column */}
+            <div className="md:col-span-5 relative mb-8 md:mb-0 flex items-center justify-center">
+              <ScrollReveal className="w-full">
                 <img
                   src={sloganImageUrl || hero3}
                   alt={sloganTitle}
-                  className="md:absolute md:-top-10 md:-bottom-10 left-0 right-0 w-full h-full md:h-[calc(100%+80px)] object-cover rounded-sm shadow-xl z-10"
+                  className="w-full h-auto object-contain rounded-sm shadow-xl z-10"
                 />
               </ScrollReveal>
             </div>
@@ -187,24 +187,7 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="container mx-auto px-4 mt-12 text-center">
-            <motion.div 
-              whileHover={{ scale: 1.05 }} 
-              whileTap={{ scale: 0.95 }} 
-              className="inline-block"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <Link 
-                to="/portfolio" 
-                className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-10 py-4 bg-transparent border border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors duration-500 rounded-sm"
-              >
-                View Full Portfolio
-              </Link>
-            </motion.div>
-          </div>
+
         </section>
       )}
 
@@ -314,7 +297,7 @@ const Index = () => {
       )}
 
       {/* CTA */}
-      <section className="py-20 px-4 text-center overflow-hidden" style={{ backgroundColor: "rgba(131, 153, 166)" }}>
+      <section className="py-20 px-4 text-center overflow-hidden bg-primary">
         <ScrollReveal>
           <h2 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">
             Ready to Tell Your Story?

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Album } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchAdminAlbums, createAlbum, updateAlbum, deleteAlbum, uploadImage } from "@/lib/adminApi";
+import { fetchAdminAlbums, createAlbum, updateAlbum, deleteAlbum, uploadImage, fetchCategories } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Loader2, Image as ImageIcon, Images } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Albums = () => {
   const queryClient = useQueryClient();
@@ -34,6 +41,15 @@ const Albums = () => {
     },
   });
   const albums = Array.isArray(albumsResponse) ? albumsResponse : [];
+
+  const { data: categoriesResponse } = useQuery({
+    queryKey: ["admin_categories"],
+    queryFn: async () => {
+      const res = await fetchCategories();
+      return res.data || [];
+    },
+  });
+  const categories = Array.isArray(categoriesResponse) ? categoriesResponse : [];
 
   const createMutation = useMutation({
     mutationFn: (data: Record<string, unknown>) => createAlbum(data),
@@ -83,6 +99,10 @@ const Albums = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.category) {
+      toast.error("Please select a category");
+      return;
+    }
     if (editingAlbum) {
       updateMutation.mutate({ id: editingAlbum.id, data: formData });
     } else {
@@ -135,7 +155,31 @@ const Albums = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="category" className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Category</Label>
-                <Input id="category" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} required className="border-[hsl(215,20%,90%)] rounded-lg focus-visible:ring-black" />
+                {categories.length === 0 ? (
+                  <div className="text-xs text-red-500 font-medium py-1">
+                    No categories found. Please{" "}
+                    <Link to="/admin/categories" className="underline text-black hover:text-gray-700 font-semibold transition-colors">
+                      create a category
+                    </Link>{" "}
+                    first.
+                  </div>
+                ) : (
+                  <Select
+                    value={formData.category}
+                    onValueChange={(value) => setFormData({ ...formData, category: value })}
+                  >
+                    <SelectTrigger id="category" className="w-full border-[hsl(215,20%,90%)] rounded-lg focus:ring-black">
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.name}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="cover" className="text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">Cover Image</Label>
