@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard, Images, List, FileText,
   Layers, MessageSquareQuote, Briefcase, Users,
-  LogOut, Menu, FileEdit, Cog
+  LogOut, Menu, FileEdit, Cog, Sparkles
 } from "lucide-react";
 
 interface NavItem {
@@ -22,6 +22,7 @@ const navItems = [
 
 const contentItems = [
   { label: "Hero Slides", path: "/admin/hero-slides", icon: Layers },
+  { label: "Showcase Items", path: "/admin/showcase", icon: Sparkles },
   { label: "Testimonials", path: "/admin/testimonials", icon: MessageSquareQuote },
   { label: "Services", path: "/admin/services", icon: Briefcase },
   { label: "Team Members", path: "/admin/team", icon: Users },

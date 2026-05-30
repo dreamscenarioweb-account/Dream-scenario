@@ -14,7 +14,7 @@ import hero2 from "@/assets/hero-2.jpg";
 const DynamicIcon = ({ name, className, strokeWidth = 2, size = 32 }: { name: string; className?: string; strokeWidth?: number; size?: number }) => {
   const CustomIconComponent = customIconsMap[name];
   if (CustomIconComponent) {
-    return <CustomIconComponent className={className} size={size} />;
+    return <CustomIconComponent className={className} size={size} strokeWidth={strokeWidth} />;
   }
   const IconComponent = (LucideIcons as any)[name];
   if (!IconComponent) {
@@ -78,7 +78,7 @@ const Services = () => {
                   <HoverCard className="text-center flex flex-col items-center h-full max-w-sm mx-auto transition-transform duration-500 hover:scale-[1.02]">
                     {/* Circle Icon Container */}
                     <div className="w-24 h-24 bg-[hsl(206,21%,63%)] hover:bg-[hsl(206,21%,58%)] rounded-full flex items-center justify-center mb-6 text-white shadow-md transition-colors duration-500">
-                      <DynamicIcon name={service.icon_name} className="w-12 h-12" strokeWidth={1.2} size={48} />
+                      <DynamicIcon name={service.icon_name} className="w-16 h-16" strokeWidth={0.5} size={64} />
                     </div>
 
                     <h3 className="font-display text-lg tracking-[0.2em] uppercase text-primary mb-3">

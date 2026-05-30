@@ -4,9 +4,67 @@ import { useState, useEffect } from "react";
 import { X, ArrowLeft, Loader2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import NotFound from "./NotFound";
-import { ScrollReveal, StaggerReveal, StaggerItem } from "@/components/animations";
+import { ScrollReveal, StaggerReveal, fadeUp } from "@/components/animations";
 import { fetchPublicAlbumBySlug } from "@/lib/publicApi";
 import type { Album, Photo } from "@/types";
+
+const JustifiedImage = ({
+  photo,
+  onClick,
+  index,
+}: {
+  photo: Photo;
+  onClick: () => void;
+  index: number;
+}) => {
+  const [ratio, setRatio] = useState(1.5);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = photo.url;
+    if (img.complete) {
+      if (img.naturalWidth && img.naturalHeight) {
+        setRatio(img.naturalWidth / img.naturalHeight);
+      }
+    } else {
+      img.onload = () => {
+        if (img.naturalWidth && img.naturalHeight) {
+          setRatio(img.naturalWidth / img.naturalHeight);
+        }
+      };
+    }
+  }, [photo.url]);
+
+  return (
+    <motion.div
+      variants={fadeUp}
+      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+      style={{
+        flexGrow: ratio,
+        flexBasis: `calc(var(--row-height) * ${ratio})`,
+        height: "var(--row-height)",
+      }}
+      className="[--row-height:199px] md:[--row-height:300px] lg:[--row-height:500px] relative overflow-hidden cursor-pointer group rounded-sm shadow-sm"
+      onClick={onClick}
+      whileHover={{ y: -4 }}
+    >
+      <motion.img
+        src={photo.url}
+        alt={photo.alt_text || `Photo ${index + 1}`}
+        loading="lazy"
+        className="w-full h-full object-cover"
+        whileHover={{ scale: 1.03 }}
+        transition={{ duration: 0.7 }}
+      />
+      {/* Lightbox / Action Overlay */}
+      <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/20 transition-all duration-500 flex items-center justify-center">
+        <span className="text-white/0 group-hover:text-white/90 font-body text-[10px] tracking-[0.25em] uppercase transition-all duration-500 opacity-0 group-hover:opacity-100">
+          
+        </span>
+      </div>
+    </motion.div>
+  );
+};
 
 const Album = () => {
   const { id } = useParams();
@@ -90,29 +148,22 @@ const Album = () => {
             </p>
           </ScrollReveal>
 
-          {/* Photos Grid - Masonry style approximation */}
+          {/* Photos Justified Grid */}
           {album.photos && album.photos.length > 0 ? (
-            <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <StaggerReveal className="flex flex-wrap gap-2.5 mt-8">
               {album.photos.map((photo: Photo, i: number) => (
-                <StaggerItem key={photo.id || i}>
-                  <motion.div
-                    className={`overflow-hidden cursor-pointer relative group rounded-sm shadow-sm ${i % 4 === 0 || i % 4 === 3 ? "md:col-span-2 lg:col-span-2 h-[500px]" : "h-[400px]"}`}
-                    onClick={() => setLightbox(i)}
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <motion.img
-                      src={photo.url}
-                      alt={photo.alt_text || `${album.title} - Photo ${i + 1}`}
-                      loading="lazy"
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.7 }}
-                    />
-                    <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/30 transition-all duration-500" />
-                  </motion.div>
-                </StaggerItem>
+                <JustifiedImage
+                  key={photo.id || i}
+                  photo={photo}
+                  onClick={() => setLightbox(i)}
+                  index={i}
+                />
               ))}
+              {/* Spacer element to prevent last row from stretching if it's incomplete */}
+              <div
+                style={{ flexGrow: 9999, flexBasis: "9999px" }}
+                className="[--row-height:199px] md:[--row-height:300px] lg:[--row-height:500px] h-[var(--row-height)] pointer-events-none"
+              />
             </StaggerReveal>
           ) : (
             <div className="text-center text-muted-foreground py-12">

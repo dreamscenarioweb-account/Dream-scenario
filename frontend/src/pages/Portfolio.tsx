@@ -104,7 +104,7 @@ const Portfolio = () => {
               )}
 
               {/* Grid */}
-              <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <AnimatePresence mode="popLayout">
                   {filtered.map((item: Album, i: number) => (
                     <motion.div
@@ -114,7 +114,7 @@ const Portfolio = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.4, delay: i * 0.05 }}
-                      className="group relative overflow-hidden cursor-pointer"
+                      className="group relative overflow-hidden cursor-pointer rounded-sm shadow-sm"
                     >
                       <Link to={`/portfolio/${item.slug || item.id}`} className="block w-full h-full">
                         <motion.img
@@ -123,11 +123,11 @@ const Portfolio = () => {
                           loading="lazy"
                           width={800}
                           height={800}
-                          className="w-full h-72 object-cover"
-                          whileHover={{ scale: 1.1 }}
+                          className="w-full aspect-[3/2] object-cover rounded-sm"
+                          whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.7 }}
                         />
-                        <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/60 transition-all duration-500 flex items-end p-6">
+                        <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/30 transition-all duration-500 flex items-end p-6">
                           <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                             <h3 className="font-display text-xl text-primary-foreground">{item.title}</h3>
                             <p className="font-body text-xs text-primary-foreground/70">{item.category || "Wedding Shoot"}</p>

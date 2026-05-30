@@ -7,14 +7,16 @@ import Layout from "@/components/Layout";
 import HeroSlider from "@/components/HeroSlider";
 import SectionTitle from "@/components/SectionTitle";
 import { ScrollReveal, StaggerReveal, StaggerItem, HoverCard } from "@/components/animations";
-import { fetchPublicServices, fetchPublicAlbums, fetchPublicTestimonials, fetchPublicBlogPosts } from "@/lib/publicApi";
+import { fetchPublicServices, fetchPublicAlbums, fetchPublicTestimonials, fetchPublicBlogPosts, fetchPublicShowcase } from "@/lib/publicApi";
 import { customIconsMap } from "@/components/CustomIcons";
-import type { Service, Album, Testimonial, BlogPost } from "@/types";
+import type { Service, Album, Testimonial, BlogPost, ShowcaseItem } from "@/types";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import hero3 from "@/assets/hero-3.jpg";
 
 const DynamicIcon = ({ name, className, strokeWidth = 2, size = 32 }: { name: string; className?: string; strokeWidth?: number; size?: number }) => {
   const CustomIconComponent = customIconsMap[name];
   if (CustomIconComponent) {
-    return <CustomIconComponent className={className} size={size} />;
+    return <CustomIconComponent className={className} size={size} strokeWidth={strokeWidth} />;
   }
   const IconComponent = (LucideIcons as any)[name];
   if (!IconComponent) {
@@ -24,10 +26,17 @@ const DynamicIcon = ({ name, className, strokeWidth = 2, size = 32 }: { name: st
 };
 
 const Index = () => {
+  const { getSetting } = useSiteSettings();
+  const sloganTitle = getSetting("slogan_title");
+  const sloganSubtitle = getSetting("slogan_subtitle");
+  const sloganDescription = getSetting("slogan_description");
+  const sloganImageUrl = getSetting("slogan_image_url");
+
   const [services, setServices] = useState<Service[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [tips, setTips] = useState<BlogPost[]>([]);
+  const [showcaseItems, setShowcaseItems] = useState<ShowcaseItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,11 +45,18 @@ const Index = () => {
       fetchPublicAlbums().catch(() => ({ data: [] })),
       fetchPublicTestimonials().catch(() => ({ data: [] })),
       fetchPublicBlogPosts().catch(() => ({ data: [] })),
-    ]).then(([servicesRes, albumsRes, testimonialsRes, tipsRes]) => {
+      fetchPublicShowcase().catch(() => ({ data: [] })),
+    ]).then(([servicesRes, albumsRes, testimonialsRes, tipsRes, showcaseRes]) => {
       if (Array.isArray(servicesRes.data)) setServices(servicesRes.data);
       if (Array.isArray(albumsRes.data)) setAlbums(albumsRes.data.slice(0, 6));
       if (Array.isArray(testimonialsRes.data)) setTestimonials(testimonialsRes.data.slice(0, 3));
       if (Array.isArray(tipsRes.data)) setTips(tipsRes.data.slice(0, 2));
+      if (Array.isArray(showcaseRes.data)) {
+        const activeShowcase = showcaseRes.data
+          .filter((item: ShowcaseItem) => item.is_active !== false)
+          .sort((a: ShowcaseItem, b: ShowcaseItem) => (a.display_order || 0) - (b.display_order || 0));
+        setShowcaseItems(activeShowcase);
+      }
       setLoading(false);
     });
   }, []);
@@ -63,7 +79,7 @@ const Index = () => {
                   <HoverCard className="text-center flex flex-col items-center h-full max-w-sm mx-auto transition-transform duration-500 hover:scale-[1.02]">
                     {/* Circle Icon Container */}
                     <div className="w-24 h-24 bg-[hsl(206,21%,63%)] hover:bg-[hsl(206,21%,58%)] rounded-full flex items-center justify-center mb-6 text-white shadow-md transition-colors duration-500">
-                      <DynamicIcon name={s.icon_name} className="w-12 h-12" strokeWidth={1.2} size={48} />
+                      <DynamicIcon name={s.icon_name} className="w-16 h-16" strokeWidth={0.5} size={64} />
                     </div>
 
                     <h3 className="font-display text-lg tracking-[0.2em] uppercase text-primary mb-3">
@@ -91,6 +107,107 @@ const Index = () => {
         </section>
       )}
 
+      {/* Slogan Section */}
+      <section className="relative py-24 bg-muted/20 overflow-visible">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+            {/* Left Image column (overlapping offset) */}
+            <div className="md:col-span-5 relative h-80 md:h-[450px] mb-8 md:mb-0">
+              <ScrollReveal className="h-full w-full">
+                <img
+                  src={sloganImageUrl || hero3}
+                  alt={sloganTitle}
+                  className="md:absolute md:-top-10 md:-bottom-10 left-0 right-0 w-full h-full md:h-[calc(100%+80px)] object-cover rounded-sm shadow-xl z-10"
+                />
+              </ScrollReveal>
+            </div>
+            {/* Right Slogan Text column */}
+            <div className="md:col-span-7 md:pl-8 space-y-6">
+              <ScrollReveal>
+                <span className="font-body text-xs md:text-sm text-accent tracking-[0.25em] uppercase block mb-2">
+                  {sloganSubtitle}
+                </span>
+                <h2 className="font-display text-2xl md:text-4xl text-primary leading-snug uppercase mb-4">
+                  {sloganTitle}
+                </h2>
+                <p className="font-body text-sm text-muted-foreground leading-loose font-light max-w-xl">
+                  {sloganDescription}
+                </p>
+                <div className="pt-4">
+                  <Link
+                    to="/slogan"
+                    className="inline-flex items-center gap-4 font-body text-xs font-semibold tracking-[0.2em] uppercase text-foreground hover:text-accent transition-colors pl-4 border-l border-foreground hover:border-accent py-1"
+                  >
+                    Read More
+                  </Link>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stories We've Told / Showcase Section */}
+      {showcaseItems.length > 0 && (
+        <section className="dark-showcase py-24 bg-muted/20 text-foreground">
+          <div className="container mx-auto px-4">
+            <SectionTitle title="Stories We've Told" />
+          </div>
+          
+          <div className="showcase-track-container">
+            <div className="showcase-track">
+              {[...showcaseItems, ...showcaseItems].map((item, index) => (
+                <motion.div 
+                  key={`${item.id}-${index}`}
+                  className="showcase-item"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: (index % showcaseItems.length) * 0.1 }}
+                >
+                  <div className="showcase-image-wrap group">
+                    <img 
+                      src={item.image_url} 
+                      alt={item.title} 
+                      loading="lazy"
+                    />
+                    <div className="showcase-overlay" />
+                    <div className="showcase-grain" />
+                  </div>
+                  <div className="showcase-meta">
+                    <span className="showcase-category">
+                      {item.category}
+                    </span>
+                    <h3 className="showcase-item-title text-foreground">
+                      {item.title}
+                    </h3>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="container mx-auto px-4 mt-12 text-center">
+            <motion.div 
+              whileHover={{ scale: 1.05 }} 
+              whileTap={{ scale: 0.95 }} 
+              className="inline-block"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <Link 
+                to="/portfolio" 
+                className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-10 py-4 bg-transparent border border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors duration-500 rounded-sm"
+              >
+                View Full Portfolio
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* Featured Albums */}
       {albums.length > 0 && (
         <section className="py-20 px-4">
@@ -101,19 +218,19 @@ const Index = () => {
             />
             <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {albums.map((a: Album) => (
-                <StaggerItem key={a.id || a.title}>
-                  <Link to={a.slug ? `/portfolio/${a.slug}` : "/portfolio"} className="group relative overflow-hidden block">
+                <StaggerItem key={a.id || a.title} className="group relative overflow-hidden block rounded-sm shadow-sm">
+                  <Link to={a.slug ? `/portfolio/${a.slug}` : "/portfolio"} className="block w-full h-full">
                     <motion.img
                       src={a.cover_image_url}
                       alt={a.title}
                       loading="lazy"
                       width={800}
                       height={800}
-                      className="w-full h-72 object-cover"
-                      whileHover={{ scale: 1.1 }}
+                      className="w-full aspect-[3/2] object-cover rounded-sm"
+                      whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.7 }}
                     />
-                    <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/60 transition-all duration-500 flex items-end p-6">
+                    <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/30 transition-all duration-500 flex items-end p-6">
                       <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                         <h3 className="font-display text-xl text-primary-foreground">{a.title}</h3>
                         <p className="font-body text-xs text-primary-foreground/70">{a.category || "Wedding Shoot"}</p>
@@ -197,7 +314,7 @@ const Index = () => {
       )}
 
       {/* CTA */}
-      <section className="bg-primary py-20 px-4 text-center overflow-hidden">
+      <section className="py-20 px-4 text-center overflow-hidden" style={{ backgroundColor: "rgba(131, 153, 166)" }}>
         <ScrollReveal>
           <h2 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">
             Ready to Tell Your Story?
