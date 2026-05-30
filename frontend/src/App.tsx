@@ -10,6 +10,7 @@ import Portfolio from "./pages/Portfolio";
 import Album from "./pages/Album";
 import Tips from "./pages/Tips";
 import Contact from "./pages/Contact";
+import Slogan from "./pages/Slogan";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 import { SiteSettingsProvider } from "./contexts/SiteSettingsContext";
@@ -21,6 +22,7 @@ import Albums from "./pages/admin/Albums";
 import AlbumPhotos from "./pages/admin/AlbumPhotos";
 import Categories from "./pages/admin/Categories";
 import HeroSlides from "./pages/admin/HeroSlides";
+import Showcase from "./pages/admin/Showcase";
 import Testimonials from "./pages/admin/Testimonials";
 import AdminServices from "./pages/admin/Services";
 import Team from "./pages/admin/Team";
@@ -47,6 +49,7 @@ const App = () => (
               <Route path="/portfolio/:id" element={<Album />} />
               <Route path="/tips" element={<Tips />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/slogan" element={<Slogan />} />
 
               {/* Admin Routes */}
               <Route path="/admin/login" element={<Login />} />
@@ -56,6 +59,7 @@ const App = () => (
                 <Route path="albums/:id/photos" element={<AlbumPhotos />} />
                 <Route path="categories" element={<Categories />} />
                 <Route path="hero-slides" element={<HeroSlides />} />
+                <Route path="showcase" element={<Showcase />} />
                 <Route path="testimonials" element={<Testimonials />} />
                 <Route path="services" element={<AdminServices />} />
                 <Route path="team" element={<Team />} />

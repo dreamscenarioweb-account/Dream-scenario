@@ -8,12 +8,15 @@ import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, UploadCloud } from "lucide-react";
 import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Settings = () => {
   const queryClient = useQueryClient();
   const { refreshSettings } = useSiteSettings();
   const [formData, setFormData] = useState<Record<string, string>>({
     site_name: "",
+    site_logo_url: "",
+    site_logo_enabled: "false",
     contact_email: "",
     contact_phone: "",
     address: "",
@@ -28,6 +31,11 @@ const Settings = () => {
     stat_happy_couples: "",
     stat_years: "",
     stat_countries: "",
+    slogan_title: "",
+    slogan_subtitle: "",
+    slogan_description: "",
+    slogan_description_full: "",
+    slogan_image_url: "",
   });
   const [uploading, setUploading] = useState(false);
 
@@ -117,6 +125,40 @@ const Settings = () => {
             </div>
           </div>
 
+          {/* Site Logo */}
+          <div className="space-y-6 pt-2">
+            <h3 className={sectionClass}>Site Logo</h3>
+            <div className="space-y-2.5">
+              <Label className={labelClass}>Logo Image</Label>
+              {formData.site_logo_url && (
+                <div className="p-4 bg-gray-50 border border-gray-100 rounded-lg flex justify-center items-center max-w-xs shadow-sm">
+                  <img src={formData.site_logo_url} alt="Logo Preview" className="h-12 object-contain" />
+                </div>
+              )}
+              <div className="flex items-center gap-3">
+                <input type="file" id="site-logo-image" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "site_logo_url")} />
+                <label htmlFor="site-logo-image" className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-[hsl(215,20%,90%)] cursor-pointer hover:bg-gray-50 transition-colors text-sm ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                  {uploading ? "Uploading..." : "Upload Logo"}
+                </label>
+                {formData.site_logo_url && (
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setFormData({ ...formData, site_logo_url: "" })} className="text-red-500 text-xs">Remove</Button>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center space-x-2 pt-2">
+              <Checkbox 
+                id="site_logo_enabled"
+                checked={formData.site_logo_enabled === "true"}
+                onCheckedChange={(checked) => setFormData({ ...formData, site_logo_enabled: checked ? "true" : "false" })}
+                className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+              />
+              <Label htmlFor="site_logo_enabled" className="cursor-pointer text-sm font-semibold text-black">
+                Enable Logo visibility (Displays logo image in navigation bar instead of text name)
+              </Label>
+            </div>
+          </div>
+
           {/* About Us */}
           <div className="space-y-6 pt-2">
             <h3 className={sectionClass}>About Us Page</h3>
@@ -173,6 +215,43 @@ const Settings = () => {
               <div className="space-y-2.5">
                 <Label htmlFor="stat_countries" className={labelClass}>Countries</Label>
                 <Input id="stat_countries" placeholder="e.g. 15+" value={formData.stat_countries || ""} onChange={handleChange} className={inputClass} />
+              </div>
+            </div>
+          </div>
+
+          {/* Slogan Section */}
+          <div className="space-y-6 pt-2">
+            <h3 className={sectionClass}>Homepage Slogan Section</h3>
+            <div className="space-y-2.5">
+              <Label htmlFor="slogan_subtitle" className={labelClass}>Slogan Subtitle</Label>
+              <Input id="slogan_subtitle" placeholder="e.g. BEYOND DESTINY" value={formData.slogan_subtitle || ""} onChange={handleChange} className={inputClass} />
+            </div>
+            <div className="space-y-2.5">
+              <Label htmlFor="slogan_title" className={labelClass}>Slogan Title</Label>
+              <Input id="slogan_title" placeholder="e.g. DESTINY HAS GOT YOU TOGETHER..." value={formData.slogan_title || ""} onChange={handleChange} className={inputClass} />
+            </div>
+            <div className="space-y-2.5">
+              <Label htmlFor="slogan_description" className={labelClass}>Homepage Slogan Description (Short Excerpt)</Label>
+              <Textarea id="slogan_description" value={formData.slogan_description || ""} onChange={handleChange} rows={3} className="border-[hsl(215,20%,90%)] rounded-lg focus-visible:ring-black" />
+            </div>
+            <div className="space-y-2.5">
+              <Label htmlFor="slogan_description_full" className={labelClass}>Slogan Detail Page Description (Full Story)</Label>
+              <Textarea id="slogan_description_full" value={formData.slogan_description_full || ""} onChange={handleChange} rows={6} className="border-[hsl(215,20%,90%)] rounded-lg focus-visible:ring-black" />
+            </div>
+            <div className="space-y-2.5">
+              <Label className={labelClass}>Slogan Photo</Label>
+              {formData.slogan_image_url && (
+                <img src={formData.slogan_image_url} alt="Slogan Preview" className="w-full h-48 object-cover rounded-lg mb-2" />
+              )}
+              <div className="flex items-center gap-3">
+                <input type="file" id="slogan-image" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "slogan_image_url")} />
+                <label htmlFor="slogan-image" className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-[hsl(215,20%,90%)] cursor-pointer hover:bg-gray-50 transition-colors text-sm ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                  {uploading ? "Uploading..." : "Upload Image"}
+                </label>
+                {formData.slogan_image_url && (
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setFormData({ ...formData, slogan_image_url: "" })} className="text-red-500 text-xs">Remove</Button>
+                )}
               </div>
             </div>
           </div>

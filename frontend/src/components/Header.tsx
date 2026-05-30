@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import defaultLogo from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -18,6 +19,8 @@ const Header = () => {
   const location = useLocation();
   const { getSetting } = useSiteSettings();
   const siteName = getSetting("site_name");
+  const logoUrl = getSetting("site_logo_url");
+  const logoEnabled = getSetting("site_logo_enabled") === "true";
 
   // Scroll hiding & premium sizing logic
   const [isVisible, setIsVisible] = useState(true);
@@ -78,8 +81,16 @@ const Header = () => {
         className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md shadow-glass border-b border-border/40"
       >
         <div className={`container mx-auto flex items-center justify-between px-4 md:px-8 transition-all duration-500 ${isScrolled ? "py-3" : "py-5 md:py-6"}`}>
-          <Link to="/" className="font-display text-xl md:text-2xl tracking-[0.2em] uppercase text-foreground z-50">
-            {siteName}
+          <Link to="/" className="font-display text-2xl md:text-3xl font-light text-foreground z-50 flex items-center">
+            {logoEnabled ? (
+              <img 
+                src={logoUrl || defaultLogo} 
+                alt={siteName} 
+                className={`w-auto transition-all duration-500 ${isScrolled ? "h-8 md:h-9" : "h-10 md:h-12"}`}
+              />
+            ) : (
+              siteName
+            )}
           </Link>
 
           {/* Desktop Nav */}
@@ -149,9 +160,17 @@ const Header = () => {
               <Link
                 to="/"
                 onClick={() => setMobileOpen(false)}
-                className="font-display text-xl tracking-[0.2em] uppercase text-foreground"
+                className="font-display text-2xl font-light text-foreground flex items-center"
               >
-                {siteName}
+                {logoEnabled ? (
+                  <img 
+                    src={logoUrl || defaultLogo} 
+                    alt={siteName} 
+                    className="h-8 w-auto object-contain"
+                  />
+                ) : (
+                  siteName
+                )}
               </Link>
               <button
                 onClick={() => setMobileOpen(false)}

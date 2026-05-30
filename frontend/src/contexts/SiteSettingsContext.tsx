@@ -21,6 +21,13 @@ export const SETTING_DEFAULTS: Record<string, string> = {
   stat_happy_couples: "200+",
   stat_years: "8",
   stat_countries: "15",
+  slogan_title: "DESTINY HAS GOT YOU TOGETHER, ALLOW US TO TAKE YOU BEYOND",
+  slogan_subtitle: "BEYOND DESTINY",
+  slogan_description: "We at Beyond Destiny look forward to making your special day a unique one. We guarantee you a stress free, laid back and fun experience with a great crew. Capturing the perfect poise or smile can only be done by having a smile...",
+  slogan_description_full: "We at Beyond Destiny look forward to making your special day a unique one. We guarantee you a stress free, laid back and fun experience with a great crew. Capturing the perfect poise or smile can only be done by having a professional photographer, therefore we ensure all our staff are properly trained and dispatched to photographic assignments fully equipped with the latest cameras, thereby ensuring we capture and immortalize your precious memories on photographs by using young, idiosyncratic and professional wedding photographers, bonded by talent, driven by passion to carry you Beyond your Destiny!\"",
+  slogan_image_url: "",
+  site_logo_url: "",
+  site_logo_enabled: "false",
 };
 
 interface SiteSettingsContextType {

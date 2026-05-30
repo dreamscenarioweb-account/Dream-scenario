@@ -3,6 +3,7 @@ import React from "react";
 interface IconProps {
   className?: string;
   size?: number;
+  strokeWidth?: string | number;
 }
 
 // Helper component for star sparkle
@@ -16,14 +17,14 @@ const Sparkle: React.FC<{ cx: number; cy: number; r: number; className?: string 
 );
 
 // 1. Weddings: Premium clinking champagne flutes with hearts and floating bubbles
-export const WeddingsIcon: React.FC<IconProps> = ({ className, size = 48 }) => (
+export const WeddingsIcon: React.FC<IconProps> = ({ className, size = 48, strokeWidth = 1.2 }) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.2"
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -66,14 +67,14 @@ export const WeddingsIcon: React.FC<IconProps> = ({ className, size = 48 }) => (
 );
 
 // 2. Engagements: High-quality faceted diamond ring
-export const EngagementsIcon: React.FC<IconProps> = ({ className, size = 48 }) => (
+export const EngagementsIcon: React.FC<IconProps> = ({ className, size = 48, strokeWidth = 1.2 }) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.2"
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -100,14 +101,14 @@ export const EngagementsIcon: React.FC<IconProps> = ({ className, size = 48 }) =
 );
 
 // 3. Casual Shoots: Detailed SLR Camera with reflections
-export const CasualShootsIcon: React.FC<IconProps> = ({ className, size = 48 }) => (
+export const CasualShootsIcon: React.FC<IconProps> = ({ className, size = 48, strokeWidth = 1.2 }) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.2"
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -131,14 +132,14 @@ export const CasualShootsIcon: React.FC<IconProps> = ({ className, size = 48 }) 
 );
 
 // 4. Homecomings: Intricate floral archway with curtains
-export const HomecomingsIcon: React.FC<IconProps> = ({ className, size = 48 }) => (
+export const HomecomingsIcon: React.FC<IconProps> = ({ className, size = 48, strokeWidth = 1.2 }) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.2"
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -169,14 +170,14 @@ export const HomecomingsIcon: React.FC<IconProps> = ({ className, size = 48 }) =
 );
 
 // 5. Cinematography: Elegant Movie/Film camera with dual reels
-export const CinematographyIcon: React.FC<IconProps> = ({ className, size = 48 }) => (
+export const CinematographyIcon: React.FC<IconProps> = ({ className, size = 48, strokeWidth = 1.2 }) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.2"
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -207,14 +208,14 @@ export const CinematographyIcon: React.FC<IconProps> = ({ className, size = 48 }
 );
 
 // 6. Photobooths: Floating heart balloons with ribbons and stars
-export const PhotoboothsIcon: React.FC<IconProps> = ({ className, size = 48 }) => (
+export const PhotoboothsIcon: React.FC<IconProps> = ({ className, size = 48, strokeWidth = 1.2 }) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.2"
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}

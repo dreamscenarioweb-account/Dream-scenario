@@ -22,11 +22,17 @@ const JustifiedImage = ({
   useEffect(() => {
     const img = new Image();
     img.src = photo.url;
-    img.onload = () => {
+    if (img.complete) {
       if (img.naturalWidth && img.naturalHeight) {
         setRatio(img.naturalWidth / img.naturalHeight);
       }
-    };
+    } else {
+      img.onload = () => {
+        if (img.naturalWidth && img.naturalHeight) {
+          setRatio(img.naturalWidth / img.naturalHeight);
+        }
+      };
+    }
   }, [photo.url]);
 
   return (
@@ -51,7 +57,7 @@ const JustifiedImage = ({
         transition={{ duration: 0.7 }}
       />
       {/* Lightbox / Action Overlay */}
-      <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/30 transition-all duration-500 flex items-center justify-center">
+      <div className="absolute inset-0 bg-hero-overlay/0 group-hover:bg-hero-overlay/20 transition-all duration-500 flex items-center justify-center">
         <span className="text-white/0 group-hover:text-white/90 font-body text-[10px] tracking-[0.25em] uppercase transition-all duration-500 opacity-0 group-hover:opacity-100">
           
         </span>
