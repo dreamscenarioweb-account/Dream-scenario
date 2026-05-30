@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { AlbumCategory } from "@/types";
+import type { Album, AlbumCategory } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchCategories, createCategory, updateCategory, deleteCategory } from "@/lib/adminApi";
+import { fetchCategories, createCategory, updateCategory, deleteCategory, fetchAdminAlbums } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +24,15 @@ const Categories = () => {
     },
   });
   const categories = Array.isArray(response) ? response : [];
+
+  const { data: albumsResponse } = useQuery({
+    queryKey: ["admin_albums"],
+    queryFn: async () => {
+      const res = await fetchAdminAlbums();
+      return res.data || [];
+    },
+  });
+  const albums = Array.isArray(albumsResponse) ? albumsResponse : [];
 
   const createMutation = useMutation({
     mutationFn: (data: Record<string, unknown>) => createCategory(data),
@@ -117,6 +126,7 @@ const Categories = () => {
             <TableHeader>
               <TableRow className="bg-[hsl(0,0%,98%)] hover:bg-[hsl(0,0%,98%)] font-body text-[11px] font-bold tracking-wider uppercase text-[hsl(215,15%,50%)]">
                 <TableHead className="h-12">Name</TableHead>
+                <TableHead>Albums Count</TableHead>
                 <TableHead>Display Order</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -124,16 +134,19 @@ const Categories = () => {
             <TableBody className="font-body text-sm">
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center h-32 text-[hsl(215,15%,50%)]">Loading...</TableCell>
+                  <TableCell colSpan={4} className="text-center h-32 text-[hsl(215,15%,50%)]">Loading...</TableCell>
                 </TableRow>
               ) : categories.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center h-32 text-[hsl(215,15%,50%)]">No categories found.</TableCell>
+                  <TableCell colSpan={4} className="text-center h-32 text-[hsl(215,15%,50%)]">No categories found.</TableCell>
                 </TableRow>
               ) : (
                 categories.sort((a: AlbumCategory, b: AlbumCategory) => a.display_order - b.display_order).map((cat: AlbumCategory) => (
                   <TableRow key={cat.id} className="hover:bg-[hsl(0,0%,99%)]">
                     <TableCell className="font-medium text-black">{cat.name}</TableCell>
+                    <TableCell className="text-[hsl(215,15%,50%)]">
+                      {albums.filter((a: Album) => a.category === cat.name).length}
+                    </TableCell>
                     <TableCell className="text-[hsl(215,15%,50%)]">{cat.display_order || 0}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
