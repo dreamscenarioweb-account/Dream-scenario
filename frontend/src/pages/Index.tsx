@@ -114,11 +114,15 @@ const Index = () => {
             {/* Left Image column */}
             <div className="md:col-span-5 relative mb-8 md:mb-0 flex items-center justify-center">
               <ScrollReveal className="w-full">
-                <img
-                  src={sloganImageUrl || hero3}
-                  alt={sloganTitle}
-                  className="w-full h-auto object-contain rounded-sm shadow-xl z-10"
-                />
+                <div className="overflow-hidden rounded-sm shadow-xl">
+                  <motion.img
+                    src={sloganImageUrl || hero3}
+                    alt={sloganTitle}
+                    className="w-full h-auto object-contain z-10"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.7 }}
+                  />
+                </div>
               </ScrollReveal>
             </div>
             {/* Right Slogan Text column */}
