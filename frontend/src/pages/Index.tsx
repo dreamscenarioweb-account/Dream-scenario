@@ -108,11 +108,11 @@ const Index = () => {
       )}
 
       {/* Slogan Section */}
-      <section className="relative py-24 bg-muted/20 overflow-visible">
+      <section className="relative py-24 bg-muted/20 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
             {/* Left Image column */}
-            <div className="md:col-span-5 relative mb-8 md:mb-0 flex items-center justify-center">
+            <div className="md:col-span-5 relative z-10 mb-8 md:mb-0 flex items-center justify-center">
               <ScrollReveal className="w-full">
                 <div className="overflow-hidden rounded-sm shadow-xl">
                   <motion.img
@@ -125,9 +125,12 @@ const Index = () => {
                 </div>
               </ScrollReveal>
             </div>
-            {/* Right Slogan Text column */}
+            {/* Right Slogan Text column — slides in from behind the image */}
             <div className="md:col-span-7 md:pl-8 space-y-6">
-              <ScrollReveal>
+              <ScrollReveal
+                variants={{ hidden: { opacity: 0, x: -200 }, visible: { opacity: 1, x: 0 } }}
+                delay={0.3}
+              >
                 <span className="font-body text-xs md:text-sm text-accent tracking-[0.25em] uppercase block mb-2">
                   {sloganSubtitle}
                 </span>

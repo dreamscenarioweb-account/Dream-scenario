@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import hero5 from "@/assets/hero-5.jpg";
 import Layout from "@/components/Layout";
 import SectionTitle from "@/components/SectionTitle";
 import { StaggerReveal, StaggerItem, HoverCard } from "@/components/animations";
@@ -70,8 +71,16 @@ const Tips = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-[hsl(220,30%,15%)]">
-        <div className="absolute inset-0 bg-hero-overlay/10 backdrop-blur-sm" />
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <motion.img
+          src={hero5}
+          alt="Tips & Inspiration"
+          className="absolute inset-0 w-full h-full object-cover origin-center"
+          width={1920}
+          height={1080}
+          style={{ animation: "kenburns 15s ease-out forwards" }}
+        />
+        <div className="absolute inset-0 bg-hero-overlay/30 backdrop-blur-sm" />
         <motion.div
           className="relative z-10 text-center px-4"
           initial={{ opacity: 0, y: 30 }}

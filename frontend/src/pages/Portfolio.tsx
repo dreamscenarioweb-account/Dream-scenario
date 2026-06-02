@@ -7,7 +7,7 @@ import SectionTitle from "@/components/SectionTitle";
 import { ScrollReveal } from "@/components/animations";
 import { fetchPublicAlbums, fetchPublicCategories } from "@/lib/publicApi";
 import type { Album, AlbumCategory } from "@/types";
-import hero3 from "@/assets/hero-3.jpg";
+import hero4 from "@/assets/hero-4.jpg";
 
 const Portfolio = () => {
   const [filter, setFilter] = useState("All");
@@ -44,7 +44,7 @@ const Portfolio = () => {
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <motion.img
-          src={hero3}
+          src={hero4}
           alt="Portfolio"
           className="absolute inset-0 w-full h-full object-cover origin-center"
           width={1920}
