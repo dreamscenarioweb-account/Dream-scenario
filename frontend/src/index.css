@@ -140,7 +140,7 @@
 
 /* Dark Showcase / Stories We've Told section custom styles */
 .dark-showcase {
-  padding: 100px 0;
+  padding: 3rem 0; /* 48px — matches py-12 used by all other sections */
   overflow: hidden;
 }
 
@@ -324,7 +324,7 @@
 
 @media(max-width: 768px) {
   .dark-showcase {
-    padding: 70px 0;
+    padding: 3rem 0;
   }
   .showcase-item {
     width: 280px;
