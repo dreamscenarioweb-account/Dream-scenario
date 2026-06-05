@@ -56,7 +56,7 @@ const HeroSlider = () => {
 
   if (loading) {
     return (
-      <section className="relative h-[100vh] bg-[hsl(220,30%,12%)] flex items-center justify-center">
+      <section className="relative h-[60vh] md:h-[100vh] bg-[hsl(220,30%,12%)] flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-white/50 animate-spin" />
       </section>
     );
@@ -64,7 +64,7 @@ const HeroSlider = () => {
 
   if (slides.length === 0) {
     return (
-      <section className="relative h-[100vh] bg-[hsl(220,30%,12%)] flex items-center justify-center">
+      <section className="relative h-[60vh] md:h-[100vh] bg-[hsl(220,30%,12%)] flex items-center justify-center">
         <div className="text-center">
           <h1 className="font-display text-5xl md:text-7xl text-white/80 tracking-wide mb-4">{siteName}</h1>
           <div className="w-24 h-px bg-white/30 mx-auto my-6" />
@@ -75,7 +75,7 @@ const HeroSlider = () => {
   }
 
   return (
-    <section className="relative h-[100vh] overflow-hidden">
+    <section className="relative h-[60vh] md:h-[100vh] overflow-hidden">
       <AnimatePresence initial={false} mode="popLayout">
         <motion.div
           key={current}
