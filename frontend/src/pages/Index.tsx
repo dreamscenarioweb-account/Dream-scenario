@@ -67,7 +67,7 @@ const Index = () => {
 
       {/* Services Section */}
       {services.length > 0 && (
-        <section className="py-12 px-4">
+        <section className="pt-20 pb-12 px-4">
           <div className="container mx-auto">
             <SectionTitle
               title="Our Services"
