@@ -42,7 +42,7 @@ const JustifiedImage = ({
       style={{
         flexGrow: ratio,
         flexBasis: `calc(var(--row-height) * ${ratio})`,
-        height: "var(--row-height)",
+        aspectRatio: `${ratio}`,
       }}
       className="[--row-height:199px] md:[--row-height:300px] lg:[--row-height:500px] relative overflow-hidden cursor-pointer group rounded-sm shadow-sm"
       onClick={onClick}
@@ -162,7 +162,7 @@ const Album = () => {
               {/* Spacer element to prevent last row from stretching if it's incomplete */}
               <div
                 style={{ flexGrow: 9999, flexBasis: "9999px" }}
-                className="[--row-height:199px] md:[--row-height:300px] lg:[--row-height:500px] h-[var(--row-height)] pointer-events-none"
+                className="h-0 pointer-events-none"
               />
             </StaggerReveal>
           ) : (
