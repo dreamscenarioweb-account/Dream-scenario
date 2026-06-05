@@ -4,12 +4,13 @@ interface SectionTitleProps {
   title: string;
   subtitle?: string;
   light?: boolean;
+  titleClassName?: string;
 }
 
-const SectionTitle = ({ title, subtitle, light }: SectionTitleProps) => {
+const SectionTitle = ({ title, subtitle, light, titleClassName }: SectionTitleProps) => {
   return (
     <ScrollReveal className="text-center mb-12">
-      <h2 className={`font-display text-3xl md:text-5xl mb-4 ${light ? "text-primary-foreground" : "text-foreground"}`}>
+      <h2 className={`font-display text-3xl md:text-5xl mb-4 ${light ? "text-primary-foreground" : "text-foreground"} ${titleClassName || ""}`}>
         {title}
       </h2>
       {subtitle && (

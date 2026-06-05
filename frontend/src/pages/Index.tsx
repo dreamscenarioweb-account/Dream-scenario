@@ -67,11 +67,12 @@ const Index = () => {
 
       {/* Services Section */}
       {services.length > 0 && (
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="container mx-auto">
             <SectionTitle
               title="Our Services"
               subtitle="With 8 years of experience in capturing celebrations across the globe, our team is here to make sure you have the best day of your life."
+              titleClassName="uppercase !text-2xl md:!text-4xl"
             />
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16 mt-12">
               {services.sort((a, b) => a.display_order - b.display_order).slice(0, 3).map((s: Service) => (
@@ -108,7 +109,7 @@ const Index = () => {
       )}
 
       {/* Slogan Section */}
-      <section className="relative py-24 bg-muted/20 overflow-hidden">
+      <section className="relative py-12 bg-muted/20 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
             {/* Left Image column */}
@@ -156,9 +157,9 @@ const Index = () => {
 
       {/* Stories We've Told / Showcase Section */}
       {showcaseItems.length > 0 && (
-        <section className="dark-showcase py-24 bg-muted/20 text-foreground">
+        <section className="dark-showcase bg-muted/20 text-foreground">
           <div className="container mx-auto px-4">
-            <SectionTitle title="Stories We've Told" />
+            <SectionTitle title="Stories We've Told" titleClassName="uppercase !text-2xl md:!text-4xl" />
           </div>
           
           <div className="showcase-track-container">
@@ -178,7 +179,7 @@ const Index = () => {
                       alt={item.title} 
                       loading="lazy"
                     />
-                    <div className="showcase-overlay" />
+
                     <div className="showcase-grain" />
                   </div>
                   <div className="showcase-meta">
@@ -200,11 +201,12 @@ const Index = () => {
 
       {/* Featured Albums */}
       {albums.length > 0 && (
-        <section className="py-20 px-4">
+        <section className="py-12 px-4">
           <div className="container mx-auto">
             <SectionTitle
               title="Featured Albums"
               subtitle="Throughout the years we have had the opportunity to photograph many wonderful couples."
+              titleClassName="uppercase !text-2xl md:!text-4xl"
             />
             <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {albums.map((a: Album) => (
@@ -252,6 +254,7 @@ const Index = () => {
               title="What Others Have Experienced"
               subtitle="You deserve the absolute best. That's why we want to make sure we are the right choice for you."
               light
+              titleClassName="!text-2xl md:!text-4xl"
             />
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {testimonials.map((t: Testimonial) => (
@@ -306,7 +309,7 @@ const Index = () => {
       {/* CTA */}
       <section className="py-20 px-4 text-center overflow-hidden bg-primary">
         <ScrollReveal>
-          <h2 className="font-display text-3xl md:text-5xl text-primary-foreground mb-4">
+          <h2 className="font-display text-2xl md:text-4xl text-primary-foreground mb-4">
             Ready to Tell Your Story?
           </h2>
           <p className="font-body text-sm text-primary-foreground/70 mb-8 max-w-lg mx-auto">
