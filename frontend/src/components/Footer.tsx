@@ -13,7 +13,7 @@ const Footer = () => {
   const facebookUrl = getSetting("facebook_url");
 
   return (
-    <footer className="bg-foreground text-primary-foreground">
+    <footer className="bg-[#BEC5CC] text-[#2C3440]">
       <div className="container mx-auto px-4 py-16">
         <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand */}
@@ -25,13 +25,13 @@ const Footer = () => {
               Light, airy, and beautifully ethereal. Capturing your love story with artistry and passion.
             </p>
             <div className="flex gap-4 mt-8">
-              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 hover:text-accent transition-all duration-300" aria-label="Instagram">
+              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 hover:text-[#3A4A5C] transition-all duration-300" aria-label="Instagram">
                 <Instagram size={24} />
               </a>
-              <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 hover:text-accent transition-all duration-300" aria-label="Facebook">
+              <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 hover:text-[#3A4A5C] transition-all duration-300" aria-label="Facebook">
                 <Facebook size={24} />
               </a>
-              <a href="#" className="opacity-70 hover:opacity-100 hover:text-accent transition-all duration-300" aria-label="YouTube">
+              <a href="#" className="opacity-70 hover:opacity-100 hover:text-[#3A4A5C] transition-all duration-300" aria-label="YouTube">
                 <Youtube size={24} />
               </a>
             </div>
@@ -81,7 +81,7 @@ const Footer = () => {
         </StaggerReveal>
 
         <ScrollReveal delay={0.3}>
-          <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center">
+          <div className="border-t border-[#2C3440]/20 mt-12 pt-8 text-center">
             <p className="font-body text-xs opacity-50">
               Copyright {new Date().getFullYear()} {siteName}. All rights reserved.
             </p>

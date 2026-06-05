@@ -248,33 +248,32 @@ const Index = () => {
 
       {/* Testimonials */}
       {testimonials.length > 0 && (
-        <section className="bg-foreground py-20 px-4">
+        <section className="bg-[#BEC5CC] py-20 px-4">
           <div className="container mx-auto">
             <SectionTitle
               title="What Others Have Experienced"
               subtitle="You deserve the absolute best. That's why we want to make sure we are the right choice for you."
-              light
-              titleClassName="!text-2xl md:!text-4xl"
+              titleClassName="!text-2xl md:!text-4xl !text-[#2C3440]"
             />
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {testimonials.map((t: Testimonial) => (
                 <StaggerItem key={t.id || t.couple}>
-                  <HoverCard className="bg-background/5 border border-primary-foreground/10 p-10 h-full backdrop-blur-sm hover:bg-background/10 transition-colors flex flex-col justify-center items-center text-center rounded-lg shadow-luxury">
+                  <HoverCard className="bg-white/15 border border-[#2C3440]/10 p-10 h-full backdrop-blur-sm hover:bg-white/25 transition-colors flex flex-col justify-center items-center text-center rounded-lg shadow-luxury">
                     {t.image_url && (
                       <div className="mb-6">
                         <img 
                           src={t.image_url} 
                           alt={t.couple} 
-                          className="w-24 h-24 rounded-full object-cover border-2 border-accent/50 shadow-lg mx-auto"
+                          className="w-24 h-24 rounded-full object-cover border-2 border-[#2C3440]/20 shadow-lg mx-auto"
                         />
                       </div>
                     )}
-                    <span className="text-accent text-5xl font-display leading-[0] block mb-4 opacity-50">"</span>
-                    <p className="font-body text-sm md:text-base text-primary-foreground/90 leading-loose italic mb-8 flex-grow font-light">
+                    <span className="text-[#3A4A5C] text-5xl font-display leading-[0] block mb-4 opacity-50">"</span>
+                    <p className="font-body text-sm md:text-base text-[#2C3440]/80 leading-loose italic mb-8 flex-grow font-light">
                       {t.quote}
                     </p>
-                    <h4 className="font-display text-xl md:text-2xl text-accent">{t.couple}</h4>
-                    <div className="w-12 h-px bg-primary-foreground/20 mt-4 mx-auto" />
+                    <h4 className="font-display text-xl md:text-2xl text-[#2C3440]">{t.couple}</h4>
+                    <div className="w-12 h-px bg-[#2C3440]/20 mt-4 mx-auto" />
                   </HoverCard>
                 </StaggerItem>
               ))}
@@ -307,18 +306,18 @@ const Index = () => {
       )}
 
       {/* CTA */}
-      <section className="py-20 px-4 text-center overflow-hidden bg-primary">
+      <section className="py-20 px-4 text-center overflow-hidden bg-[#9AA0A6]">
         <ScrollReveal>
-          <h2 className="font-display text-2xl md:text-4xl text-primary-foreground mb-4">
+          <h2 className="font-display text-2xl md:text-4xl text-white mb-4">
             Ready to Tell Your Story?
           </h2>
-          <p className="font-body text-sm text-primary-foreground/70 mb-8 max-w-lg mx-auto">
+          <p className="font-body text-sm text-white/80 mb-8 max-w-lg mx-auto">
             Let us capture the moments that matter most. Get in touch to discuss your special day.
           </p>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
             <Link
               to="/contact"
-              className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-12 py-5 bg-background text-foreground hover:bg-accent border border-transparent hover:text-accent-foreground shadow-luxury hover:shadow-luxury-hover transition-all duration-500 translate-y-0 hover:-translate-y-1 rounded-sm"
+              className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-12 py-5 bg-white text-[#2C3440] hover:bg-[#2C3440] border border-transparent hover:text-white shadow-luxury hover:shadow-luxury-hover transition-all duration-500 translate-y-0 hover:-translate-y-1 rounded-sm"
             >
               Request a Quote
             </Link>
