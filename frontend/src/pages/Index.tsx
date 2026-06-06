@@ -98,7 +98,7 @@ const Index = () => {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
                   to="/services"
-                  className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-10 py-4 bg-transparent border border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors duration-500 rounded-sm"
+                  className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-10 py-4 bg-transparent border border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white transition-all duration-300 hover:scale-[1.01] active:scale-95 rounded-sm"
                 >
                   Know More
                 </Link>
@@ -236,7 +236,7 @@ const Index = () => {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
                 <Link
                   to="/portfolio"
-                  className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-10 py-4 bg-transparent border border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors duration-500 rounded-sm"
+                  className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-10 py-4 bg-transparent border border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-white transition-all duration-300 hover:scale-[1.01] active:scale-95 rounded-sm"
                 >
                   View All Albums
                 </Link>
@@ -248,32 +248,33 @@ const Index = () => {
 
       {/* Testimonials */}
       {testimonials.length > 0 && (
-        <section className="bg-[#BEC5CC] py-20 px-4">
+        <section className="bg-[#232323] py-20 px-4 text-white">
           <div className="container mx-auto">
             <SectionTitle
               title="What Others Have Experienced"
               subtitle="You deserve the absolute best. That's why we want to make sure we are the right choice for you."
-              titleClassName="!text-2xl md:!text-4xl !text-[#2C3440]"
+              light={true}
+              titleClassName="!text-2xl md:!text-4xl !text-white"
             />
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {testimonials.map((t: Testimonial) => (
                 <StaggerItem key={t.id || t.couple}>
-                  <HoverCard className="bg-white/15 border border-[#2C3440]/10 p-10 h-full backdrop-blur-sm hover:bg-white/25 transition-colors flex flex-col justify-center items-center text-center rounded-lg shadow-luxury">
+                  <HoverCard className="bg-white/5 border border-white/10 p-10 h-full backdrop-blur-sm hover:bg-white/10 transition-colors flex flex-col justify-center items-center text-center rounded-lg shadow-luxury">
                     {t.image_url && (
                       <div className="mb-6">
                         <img 
                           src={t.image_url} 
                           alt={t.couple} 
-                          className="w-24 h-24 rounded-full object-cover border-2 border-[#2C3440]/20 shadow-lg mx-auto"
+                          className="w-24 h-24 rounded-full object-cover border-2 border-white/20 shadow-lg mx-auto"
                         />
                       </div>
                     )}
-                    <span className="text-[#3A4A5C] text-5xl font-display leading-[0] block mb-4 opacity-50">"</span>
-                    <p className="font-body text-sm md:text-base text-[#2C3440]/80 leading-loose italic mb-8 flex-grow font-light">
+                    <span className="text-white/30 text-5xl font-display leading-[0] block mb-4 opacity-50">"</span>
+                    <p className="font-body text-sm md:text-base text-white/80 leading-loose italic mb-8 flex-grow font-light">
                       {t.quote}
                     </p>
-                    <h4 className="font-display text-xl md:text-2xl text-[#2C3440]">{t.couple}</h4>
-                    <div className="w-12 h-px bg-[#2C3440]/20 mt-4 mx-auto" />
+                    <h4 className="font-display text-xl md:text-2xl text-white">{t.couple}</h4>
+                    <div className="w-12 h-px bg-white/20 mt-4 mx-auto" />
                   </HoverCard>
                 </StaggerItem>
               ))}
@@ -306,7 +307,7 @@ const Index = () => {
       )}
 
       {/* CTA */}
-      <section className="py-20 px-4 text-center overflow-hidden bg-[#9AA0A6]">
+      <section className="py-20 px-4 text-center overflow-hidden bg-[#434343]">
         <ScrollReveal>
           <h2 className="font-display text-2xl md:text-4xl text-white mb-4">
             Ready to Tell Your Story?
@@ -317,7 +318,7 @@ const Index = () => {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
             <Link
               to="/contact"
-              className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-12 py-5 bg-white text-[#2C3440] hover:bg-[#2C3440] border border-transparent hover:text-white shadow-luxury hover:shadow-luxury-hover transition-all duration-500 translate-y-0 hover:-translate-y-1 rounded-sm"
+              className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-12 py-5 bg-white text-[#232323] hover:bg-[#232323] hover:text-white border border-transparent shadow-luxury hover:shadow-luxury-hover transition-all duration-300 translate-y-0 hover:-translate-y-0.5 hover:scale-[1.01] active:scale-95 rounded-sm"
             >
               Request a Quote
             </Link>

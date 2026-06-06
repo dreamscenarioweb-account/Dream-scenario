@@ -162,7 +162,7 @@ const Contact = () => {
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-12 py-5 bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground shadow-luxury hover:shadow-luxury-hover transition-all duration-500 translate-y-0 hover:-translate-y-1 rounded-sm w-full md:w-auto disabled:opacity-50"
+                    className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-12 py-5 bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground shadow-luxury hover:shadow-luxury-hover transition-all duration-300 translate-y-0 hover:-translate-y-0.5 hover:scale-[1.01] active:scale-95 rounded-sm w-full md:w-auto disabled:opacity-50"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >

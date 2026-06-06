@@ -129,7 +129,7 @@ const Header = () => {
           >
             <Link
               to="/contact"
-              className="font-body text-[11px] font-medium tracking-[0.2em] uppercase px-6 py-2.5 bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground shadow-sm hover:shadow-md transition-all duration-300"
+              className="font-body text-[11px] font-medium tracking-[0.2em] uppercase px-6 py-2.5 bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.01] active:scale-95 inline-block"
             >
               Request a Quote
             </Link>
@@ -212,7 +212,7 @@ const Header = () => {
                 <Link
                   to="/contact"
                   onClick={() => setMobileOpen(false)}
-                  className="font-body text-sm tracking-[0.2em] uppercase px-8 py-3 bg-primary text-primary-foreground shadow-luxury inline-block"
+                  className="font-body text-sm tracking-[0.2em] uppercase px-8 py-3 bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground shadow-luxury inline-block transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.01] active:scale-95"
                 >
                   Request a Quote
                 </Link>

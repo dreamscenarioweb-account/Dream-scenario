@@ -52,6 +52,7 @@ func seedSettings(ctx context.Context, client *firestore.Client) {
 		"about_description":   "Every couple has a unique love story, and it deserves to be told beautifully. I believe that the most powerful images aren't posed or perfect — they're honest, emotional, and alive with the energy of the moment. Whether it's a glance across the aisle or a burst of laughter during the first dance, I'm there to preserve it forever.",
 		"about_description_2": "Based in [Your City], I travel worldwide to document weddings, engagements, and intimate celebrations. My approach is relaxed and unobtrusive — you'll forget I'm there, and the images will surprise you with how much they capture.",
 		"about_image_url":     "",
+		"instagram_url":      "https://www.instagram.com/dream.scenario__weddings?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
 		"stat_weddings":       "200+",
 		"stat_happy_couples":  "200+",
 		"stat_years":          "8",

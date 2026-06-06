@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 30% 20%;
 
-    --primary: 215 50% 25%;         /* Dark elegant navy blue */
+    --primary: 0 0% 14%;            /* Dark charcoal (#232323) */
     --primary-foreground: 210 20% 98%;
 
     --secondary: 210 20% 94%;       /* Very soft cool gray */
@@ -24,7 +24,7 @@
     --muted: 210 20% 96%;
     --muted-foreground: 215 15% 50%;
 
-    --accent: 210 70% 60%;          /* Elegant light blue */
+    --accent: 0 0% 26%;             /* Medium gray (#434343) */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
