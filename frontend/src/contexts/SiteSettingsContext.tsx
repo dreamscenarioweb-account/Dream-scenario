@@ -10,7 +10,7 @@ export const SETTING_DEFAULTS: Record<string, string> = {
   contact_email: "hello@yourstudio.com",
   contact_phone: "+1 (555) 000-0000",
   address: "City, Country",
-  instagram_url: "#",
+  instagram_url: "https://www.instagram.com/dream.scenario__weddings?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   facebook_url: "#",
   about_title: "More Than a Photographer - A Storyteller",
   about_tagline: "Capturing the moments that take your breath away",

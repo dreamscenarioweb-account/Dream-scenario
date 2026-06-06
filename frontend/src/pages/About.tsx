@@ -155,7 +155,7 @@ const About = () => {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
             <Link
               to="/contact"
-              className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-12 py-5 bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground shadow-luxury hover:shadow-luxury-hover transition-all duration-500 translate-y-0 hover:-translate-y-1 rounded-sm"
+              className="inline-block font-body text-xs font-medium tracking-[0.15em] uppercase px-12 py-5 bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground shadow-luxury hover:shadow-luxury-hover transition-all duration-300 translate-y-0 hover:-translate-y-0.5 hover:scale-[1.01] active:scale-95 rounded-sm"
             >
               Get in Touch
             </Link>

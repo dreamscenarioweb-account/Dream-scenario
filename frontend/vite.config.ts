@@ -11,7 +11,25 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: "fix-vite-rolldown-warnings",
+      configResolved(config) {
+        if (config.optimizeDeps?.rollupOptions) {
+          const rollupOpts = config.optimizeDeps.rollupOptions as any;
+          if (rollupOpts) {
+            config.optimizeDeps.rolldownOptions = {
+              ...config.optimizeDeps.rolldownOptions,
+              ...rollupOpts,
+            };
+            delete (config.optimizeDeps.rolldownOptions as any).jsx;
+            delete (config.optimizeDeps as any).rollupOptions;
+          }
+        }
+      },
+    },
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
