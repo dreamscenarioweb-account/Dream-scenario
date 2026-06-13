@@ -10,6 +10,8 @@ import { fetchPublicServices } from "@/lib/publicApi";
 import { customIconsMap } from "@/components/CustomIcons";
 import type { Service } from "@/types";
 import hero2 from "@/assets/hero-2.jpg";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+
 
 const DynamicIcon = ({ name, className, strokeWidth = 2, size = 32 }: { name: string; className?: string; strokeWidth?: number; size?: number }) => {
   const CustomIconComponent = customIconsMap[name];
@@ -26,6 +28,9 @@ const DynamicIcon = ({ name, className, strokeWidth = 2, size = 32 }: { name: st
 const Services = () => {
   const [servicesList, setServicesList] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const { getSetting } = useSiteSettings();
+  const heroImage = getSetting("hero_image_services") || hero2;
+
 
   useEffect(() => {
     fetchPublicServices()
@@ -41,7 +46,7 @@ const Services = () => {
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <motion.img
-          src={hero2}
+          src={heroImage}
           alt="Services"
           className="absolute inset-0 w-full h-full object-cover origin-center"
           width={1920}
@@ -55,7 +60,7 @@ const Services = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="font-display text-6xl md:text-8xl text-white drop-shadow-xl tracking-wide">Our Services</h1>
+          <h1 className="font-display text-5xl md:text-7xl text-white drop-shadow-xl tracking-wide">Our Services</h1>
           <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase mt-6">CAPTURING LIFE'S BEAUTIFUL MOMENTS</p>
         </motion.div>
       </section>

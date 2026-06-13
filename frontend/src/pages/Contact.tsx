@@ -59,13 +59,14 @@ const Contact = () => {
   const contactAddress = settings.address || "Worldwide Coverage";
   const instagramUrl = settings.instagram_url || "#";
   const facebookUrl = settings.facebook_url || "#";
+  const heroImage = settings.hero_image_contact || hero3;
 
   return (
     <Layout>
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <motion.img
-          src={hero3}
+          src={heroImage}
           alt="Contact"
           className="absolute inset-0 w-full h-full object-cover origin-center"
           width={1920}
@@ -79,7 +80,7 @@ const Contact = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="font-display text-6xl md:text-8xl text-white drop-shadow-xl tracking-wide">Contact Us</h1>
+          <h1 className="font-display text-5xl md:text-7xl text-white drop-shadow-xl tracking-wide">Contact Us</h1>
           <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase mt-6">LET'S PLAN YOUR SPECIAL DAY</p>
         </motion.div>
       </section>
