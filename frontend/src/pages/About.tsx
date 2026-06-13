@@ -32,6 +32,7 @@ const About = () => {
   const aboutDescription = settings.about_description || "";
   const aboutDescription2 = settings.about_description_2 || "";
   const aboutImageUrl = settings.about_image_url || "";
+  const heroImage = settings.hero_image_about || hero1;
   const statsWeddings = settings.stat_weddings || "500+";
   const statsHappyCouples = settings.stat_happy_couples || "500+";
   const statsYears = settings.stat_years || "8+";
@@ -49,7 +50,7 @@ const About = () => {
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <motion.img
-          src={hero1}
+          src={heroImage}
           alt="About Us"
           className="absolute inset-0 w-full h-full object-cover origin-center"
           width={1920}
@@ -63,7 +64,7 @@ const About = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="font-display text-6xl md:text-8xl text-white drop-shadow-xl tracking-wide">About Us</h1>
+          <h1 className="font-display text-5xl md:text-7xl text-white drop-shadow-xl tracking-wide">About Us</h1>
           <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase mt-6">OUR STORY & PASSION</p>
         </motion.div>
       </section>
