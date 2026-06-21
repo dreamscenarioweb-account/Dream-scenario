@@ -1,8 +1,10 @@
 package admin
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"image/jpeg"
 	"io"
 	"log"
 	"net/http"
@@ -12,8 +14,14 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
+	"github.com/disintegration/imaging"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+)
+
+const (
+	maxLongEdge = 2000
+	jpegQuality = 82
 )
 
 type UploadHandler struct {
@@ -67,24 +75,47 @@ func (h *UploadHandler) UploadImage(c *gin.Context) {
 		return
 	}
 
-	// Generate unique filename and download token
-	ext := "jpg"
-	if parts := strings.Split(header.Filename, "."); len(parts) > 1 {
-		ext = parts[len(parts)-1]
+	// Read into memory for processing
+	raw, err := io.ReadAll(file)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read uploaded file"})
+		return
 	}
-	filename := fmt.Sprintf("uploads/%d-%s.%s", time.Now().Unix(), uuid.New().String(), ext)
+
+	// Decode image (supports JPEG, PNG, WebP, GIF)
+	src, err := imaging.Decode(bytes.NewReader(raw))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid or unreadable image"})
+		return
+	}
+
+	// Resize if either dimension exceeds maxLongEdge, preserving aspect ratio
+	b := src.Bounds()
+	if b.Dx() > maxLongEdge || b.Dy() > maxLongEdge {
+		src = imaging.Fit(src, maxLongEdge, maxLongEdge, imaging.Lanczos)
+	}
+
+	// Encode as JPEG at quality 82
+	var buf bytes.Buffer
+	if err := jpeg.Encode(&buf, src, &jpeg.Options{Quality: jpegQuality}); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to encode image"})
+		return
+	}
+
+	// Generate unique filename and download token
+	filename := fmt.Sprintf("uploads/%d-%s.jpg", time.Now().Unix(), uuid.New().String())
 	downloadToken := uuid.New().String()
 
 	// Upload to Firebase Storage
 	ctx := context.Background()
 	obj := h.bucket.Object(filename)
 	writer := obj.NewWriter(ctx)
-	writer.ContentType = contentType
+	writer.ContentType = "image/jpeg"
 	writer.Metadata = map[string]string{
 		"firebaseStorageDownloadTokens": downloadToken,
 	}
 
-	if _, err := io.Copy(writer, file); err != nil {
+	if _, err := io.Copy(writer, &buf); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write file to storage: " + err.Error()})
 		return
 	}
@@ -95,11 +126,10 @@ func (h *UploadHandler) UploadImage(c *gin.Context) {
 
 	// Construct Firebase Storage public URL
 	bucketName := os.Getenv("FIREBASE_STORAGE_BUCKET")
-	// Firebase Storage URL format requires URL encoding the path (e.g. converting '/' to '%2F')
 	encodedPath := strings.ReplaceAll(url.QueryEscape(filename), "+", "%20")
 	firebaseURL := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media&token=%s", bucketName, encodedPath, downloadToken)
 
-	log.Printf("Uploaded file to: %s", firebaseURL)
+	log.Printf("Uploaded optimized image: %s (original size: %d bytes, optimized: %d bytes)", firebaseURL, header.Size, buf.Len())
 
 	c.JSON(http.StatusOK, gin.H{"url": firebaseURL})
 }

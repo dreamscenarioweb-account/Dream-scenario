@@ -8,12 +8,17 @@ import { ScrollReveal } from "@/components/animations";
 import { fetchPublicAlbums, fetchPublicCategories } from "@/lib/publicApi";
 import type { Album, AlbumCategory } from "@/types";
 import hero4 from "@/assets/hero-4.jpg";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+
 
 const Portfolio = () => {
   const [filter, setFilter] = useState("All");
   const [albums, setAlbums] = useState<Album[]>([]);
   const [categories, setCategories] = useState<string[]>(["All"]);
   const [loading, setLoading] = useState(true);
+  const { getSetting } = useSiteSettings();
+  const heroImage = getSetting("hero_image_portfolio") || hero4;
+
 
   useEffect(() => {
     Promise.all([
@@ -44,7 +49,7 @@ const Portfolio = () => {
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <motion.img
-          src={hero4}
+          src={heroImage}
           alt="Portfolio"
           className="absolute inset-0 w-full h-full object-cover origin-center"
           width={1920}
@@ -58,7 +63,7 @@ const Portfolio = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="font-display text-6xl md:text-8xl text-white drop-shadow-xl tracking-wide">Portfolio</h1>
+          <h1 className="font-display text-5xl md:text-7xl text-white drop-shadow-xl tracking-wide">Portfolio</h1>
           <p className="font-body text-sm md:text-base text-white/90 tracking-[0.3em] uppercase mt-6">OUR AMAZING WORK</p>
         </motion.div>
       </section>

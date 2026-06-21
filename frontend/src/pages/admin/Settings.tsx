@@ -36,6 +36,10 @@ const Settings = () => {
     slogan_description: "",
     slogan_description_full: "",
     slogan_image_url: "",
+    hero_image_services: "",
+    hero_image_about: "",
+    hero_image_portfolio: "",
+    hero_image_contact: "",
   });
   const [uploading, setUploading] = useState(false);
 
@@ -251,6 +255,91 @@ const Settings = () => {
                 </label>
                 {formData.slogan_image_url && (
                   <Button type="button" variant="ghost" size="sm" onClick={() => setFormData({ ...formData, slogan_image_url: "" })} className="text-red-500 text-xs">Remove</Button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Page Hero Images */}
+          <div className="space-y-6 pt-2">
+            <h3 className={sectionClass}>Page Hero Images</h3>
+            
+            {/* Services Hero Image */}
+            <div className="space-y-2.5">
+              <Label className={labelClass}>Services Page Hero Image</Label>
+              {formData.hero_image_services && (
+                <div className="relative w-full h-48 rounded-lg overflow-hidden group border border-[hsl(215,20%,90%)] mb-2">
+                  <img src={formData.hero_image_services} alt="Services Hero Preview" className="w-full h-full object-cover" />
+                </div>
+              )}
+              <div className="flex items-center gap-3">
+                <input type="file" id="hero-image-services" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "hero_image_services")} />
+                <label htmlFor="hero-image-services" className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-[hsl(215,20%,90%)] cursor-pointer hover:bg-gray-50 transition-colors text-sm ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                  {uploading ? "Uploading..." : "Upload Services Hero"}
+                </label>
+                {formData.hero_image_services && (
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setFormData({ ...formData, hero_image_services: "" })} className="text-red-500 text-xs hover:text-red-600 hover:bg-red-50">Remove</Button>
+                )}
+              </div>
+            </div>
+
+            {/* About Us Hero Image */}
+            <div className="space-y-2.5">
+              <Label className={labelClass}>About Us Page Hero Image</Label>
+              {formData.hero_image_about && (
+                <div className="relative w-full h-48 rounded-lg overflow-hidden group border border-[hsl(215,20%,90%)] mb-2">
+                  <img src={formData.hero_image_about} alt="About Hero Preview" className="w-full h-full object-cover" />
+                </div>
+              )}
+              <div className="flex items-center gap-3">
+                <input type="file" id="hero-image-about" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "hero_image_about")} />
+                <label htmlFor="hero-image-about" className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-[hsl(215,20%,90%)] cursor-pointer hover:bg-gray-50 transition-colors text-sm ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                  {uploading ? "Uploading..." : "Upload About Hero"}
+                </label>
+                {formData.hero_image_about && (
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setFormData({ ...formData, hero_image_about: "" })} className="text-red-500 text-xs hover:text-red-600 hover:bg-red-50">Remove</Button>
+                )}
+              </div>
+            </div>
+
+            {/* Portfolio Hero Image */}
+            <div className="space-y-2.5">
+              <Label className={labelClass}>Portfolio Page Hero Image</Label>
+              {formData.hero_image_portfolio && (
+                <div className="relative w-full h-48 rounded-lg overflow-hidden group border border-[hsl(215,20%,90%)] mb-2">
+                  <img src={formData.hero_image_portfolio} alt="Portfolio Hero Preview" className="w-full h-full object-cover" />
+                </div>
+              )}
+              <div className="flex items-center gap-3">
+                <input type="file" id="hero-image-portfolio" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "hero_image_portfolio")} />
+                <label htmlFor="hero-image-portfolio" className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-[hsl(215,20%,90%)] cursor-pointer hover:bg-gray-50 transition-colors text-sm ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                  {uploading ? "Uploading..." : "Upload Portfolio Hero"}
+                </label>
+                {formData.hero_image_portfolio && (
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setFormData({ ...formData, hero_image_portfolio: "" })} className="text-red-500 text-xs hover:text-red-600 hover:bg-red-50">Remove</Button>
+                )}
+              </div>
+            </div>
+
+            {/* Contact Us Hero Image */}
+            <div className="space-y-2.5 font-body">
+              <Label className={labelClass}>Contact Us Page Hero Image</Label>
+              {formData.hero_image_contact && (
+                <div className="relative w-full h-48 rounded-lg overflow-hidden group border border-[hsl(215,20%,90%)] mb-2">
+                  <img src={formData.hero_image_contact} alt="Contact Hero Preview" className="w-full h-full object-cover" />
+                </div>
+              )}
+              <div className="flex items-center gap-3">
+                <input type="file" id="hero-image-contact" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "hero_image_contact")} />
+                <label htmlFor="hero-image-contact" className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-[hsl(215,20%,90%)] cursor-pointer hover:bg-gray-50 transition-colors text-sm ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                  {uploading ? "Uploading..." : "Upload Contact Hero"}
+                </label>
+                {formData.hero_image_contact && (
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setFormData({ ...formData, hero_image_contact: "" })} className="text-red-500 text-xs hover:text-red-600 hover:bg-red-50">Remove</Button>
                 )}
               </div>
             </div>

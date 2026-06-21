@@ -57,6 +57,10 @@ func seedSettings(ctx context.Context, client *firestore.Client) {
 		"stat_happy_couples":  "200+",
 		"stat_years":          "8",
 		"stat_countries":      "15",
+		"hero_image_services":  "",
+		"hero_image_about":     "",
+		"hero_image_portfolio": "",
+		"hero_image_contact":   "",
 	}
 
 	batch := client.Batch()

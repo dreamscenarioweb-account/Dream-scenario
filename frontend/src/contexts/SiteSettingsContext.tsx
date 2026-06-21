@@ -28,6 +28,10 @@ export const SETTING_DEFAULTS: Record<string, string> = {
   slogan_image_url: "",
   site_logo_url: "",
   site_logo_enabled: "false",
+  hero_image_services: "",
+  hero_image_about: "",
+  hero_image_portfolio: "",
+  hero_image_contact: "",
 };
 
 interface SiteSettingsContextType {
