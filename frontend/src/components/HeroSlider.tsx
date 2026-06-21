@@ -92,6 +92,7 @@ const HeroSlider = () => {
             className="w-full h-full object-cover origin-center"
             width={1920}
             height={1080}
+            fetchPriority="high"
             style={{
               animation: "luxury-zoom 8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
               objectPosition: getFocalPosition(slides[current]),
