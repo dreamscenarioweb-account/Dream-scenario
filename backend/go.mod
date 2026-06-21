@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.21.0
 	cloud.google.com/go/storage v1.56.0
 	firebase.google.com/go/v4 v4.19.0
+	github.com/disintegration/imaging v1.6.2
 	github.com/gin-gonic/gin v1.12.0
 	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/google/uuid v1.6.0
@@ -74,6 +75,7 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.39.0 // indirect
 	go.opentelemetry.io/otel/trace v1.39.0 // indirect
 	golang.org/x/arch v0.22.0 // indirect
+	golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8 // indirect
 	golang.org/x/net v0.52.0 // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect

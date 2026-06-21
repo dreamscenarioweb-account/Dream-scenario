@@ -161,25 +161,19 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <SectionTitle title="Stories We've Told" titleClassName="uppercase !text-2xl md:!text-4xl" />
           </div>
-          
+
           <div className="showcase-track-container">
             <div className="showcase-track">
-              {[...showcaseItems, ...showcaseItems].map((item, index) => (
-                <motion.div 
-                  key={`${item.id}-${index}`}
-                  className="showcase-item"
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: (index % showcaseItems.length) * 0.1 }}
-                >
+              {[...showcaseItems.slice(0, 12), ...showcaseItems.slice(0, 12)].map((item, index) => (
+                <div key={`${item.id}-${index}`} className="showcase-item">
                   <div className="showcase-image-wrap group">
-                    <img 
-                      src={item.image_url} 
-                      alt={item.title} 
+                    <img
+                      src={item.image_url}
+                      alt={item.title}
+                      width={340}
+                      height={453}
                       loading="lazy"
                     />
-
                     <div className="showcase-grain" />
                   </div>
                   <div className="showcase-meta">
@@ -190,11 +184,10 @@ const Index = () => {
                       {item.title}
                     </h3>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
-          
 
         </section>
       )}
